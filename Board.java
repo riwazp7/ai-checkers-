@@ -3,13 +3,15 @@
  * (c) Riwaz Poudyal, Julian Vera, Mark Talbot
  */
 
+import java.util.ArrayList;
+
 public class Board {
 
   final int DEF_HEIGHT = 8;
   final int DEF_WIDTH = 8;
 
-  ArrayList<RedPiece> redPieces;
-  ArrayList<BlackPiece> blackPieces;
+  ArrayList<Piece> redPieces;
+  ArrayList<Piece> blackPieces;
   Piece[][] board = new Piece[DEF_HEIGHT][DEF_WIDTH];
 
   public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors) {
