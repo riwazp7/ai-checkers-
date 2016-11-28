@@ -6,13 +6,20 @@
 public class Piece {
 
   // Coordinate of this piece in the board.
-  Coor coor;
+  final Coor coor;
 
   // True if this is a red piece. False if this is a black piece.
-  boolean red;
+  final boolean red;
 
   public Piece(Coor coor) {
     this.coor = coor;
   }
 
+  public Coor getCoor() {
+    return coor;
+  }
+
+  public boolean isRed() {
+    return red;
+  }
 }
