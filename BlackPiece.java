@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class BlackPiece extends Piece {
 
-  public BlackPiece(Coor coor) {
+  public BlackPiece(Coor coor, Board board) {
     this.coor = coor;
     this.red = false;
   }
@@ -16,5 +16,11 @@ public class BlackPiece extends Piece {
   public BlackPiece(BlackPiece blackPiece) {
     this.coor = blackPiece.getCoor();
     this.red = false;
+    this.board = new Board(blackPiece.getBoard());
   }
+
+  public static void main(String[] args) {
+    // UNIT TESTS
+  }
+
 }

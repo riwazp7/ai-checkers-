@@ -16,13 +16,13 @@ public class Board {
 
   public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors) {
     for (Coor coor : redCoors) {
-      Piece piece = new RedPiece(coor);
+      Piece piece = new RedPiece(coor, this);
       redPieces.add(piece);
       board[coor.getRow()][coor.getCol()] = piece;
     }
 
     for (Coor coor : blackCoors) {
-      Piece piece = new BlackPiece(coor);
+      Piece piece = new BlackPiece(coor, this);
       blackPieces.add(piece);
       board[coor.getRow()][coor.getCol()] = piece;
     }
@@ -30,6 +30,10 @@ public class Board {
 
   public Board(Board board) {
     // Deep clone a board
+  }
+
+  public static void main(String[] args) {
+    // UNIT TESTS
   }
 
 }
