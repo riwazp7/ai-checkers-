@@ -3,12 +3,11 @@
  * (c) Riwaz Poudyal, Mark Talbot, Julian Vera
  */
 
-import java.util.ArrayList;
-
 public class BlackPiece extends Piece {
 
   public BlackPiece(Coor coor, Board board) {
     this.coor = coor;
+    this.board = board;
     this.red = false;
   }
 
