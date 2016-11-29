@@ -4,33 +4,77 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 
-  final int DEF_HEIGHT = 8;
-  final int DEF_WIDTH = 8;
+  // Default height and width of the board
+  private final int DEF_HEIGHT = 8;
+  private final int DEF_WIDTH = 8;
 
-  ArrayList<Piece> redPieces;
-  ArrayList<Piece> blackPieces;
-  Piece[][] board = new Piece[DEF_HEIGHT][DEF_WIDTH];
+  /* A state of the Checker's board depends on the positions of the red and black pieces and whose turn it is.
+   * Each piece's piece object is stored in both a List and in the 2D array.
+   */
+  private ArrayList<Piece> redPieces = new ArrayList<>();
+  private ArrayList<Piece> blackPieces = new ArrayList<>();
+  private Piece[][] boardArray = new Piece[DEF_HEIGHT][DEF_WIDTH];
 
-  public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors) {
+  // True iff red player's turn to play
+  private boolean redTurn;
+
+  public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors, boolean redTurn) {
+
+    this.redTurn = redTurn;
+
     for (Coor coor : redCoors) {
       Piece piece = new RedPiece(coor, this);
       redPieces.add(piece);
-      board[coor.getRow()][coor.getCol()] = piece;
+      boardArray[coor.getRow()][coor.getCol()] = piece;
     }
 
     for (Coor coor : blackCoors) {
       Piece piece = new BlackPiece(coor, this);
       blackPieces.add(piece);
-      board[coor.getRow()][coor.getCol()] = piece;
+      boardArray[coor.getRow()][coor.getCol()] = piece;
     }
   }
 
-  public Board(Board board) {
-    // Deep clone a board
+  // Defaults to black player's turn as the black player starts first.
+  public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors) {
+    this(redCoors, blackCoors, false);
   }
+
+  // Deep clone a board state
+  public Board(Board board) {
+    for (Piece piece : board.getRedPieces()) {
+      Piece newPiece = new RedPiece(piece, this);
+      redPieces.add(newPiece);
+      boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
+    }
+
+    for (Piece piece : board.getBlackPieces()) {
+      Piece newPiece = new BlackPiece(piece, this);
+      blackPieces.add(newPiece);
+      boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
+    }
+  }
+
+  public ArrayList<Piece> getRedPieces() {
+    return redPieces;
+  }
+
+  public ArrayList<Piece> getBlackPieces() {
+    return blackPieces;
+  }
+
+  ////////// TODO
+
+
+  // Return all board states that can be reached from this board state in a single move.
+  public List<Board> getAdjacentBoards() {
+    return null;
+  }
+
 
   public static void main(String[] args) {
     // UNIT TESTS

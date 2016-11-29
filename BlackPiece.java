@@ -12,10 +12,10 @@ public class BlackPiece extends Piece {
   }
 
   // Clone a black piece
-  public BlackPiece(BlackPiece blackPiece) {
+  public BlackPiece(Piece blackPiece, Board board) {
     this.coor = blackPiece.getCoor();
     this.red = false;
-    this.board = new Board(blackPiece.getBoard());
+    this.board = board;
   }
 
   public static void main(String[] args) {
