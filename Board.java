@@ -67,14 +67,32 @@ public class Board {
     return blackPieces;
   }
 
-  ////////// TODO
-
-
-  // Return all board states that can be reached from this board state in a single move.
-  public List<Board> getAdjacentBoards() {
-    return null;
+  public Piece[][] getBoardArray() {
+    return boardArray;
   }
 
+  public boolean isOccupied(Coor coor) {
+    return (boardArray[coor.getRow()][coor.getCol()] != null);
+  }
+
+  public Piece getPieceAt(Coor coor) {
+    return boardArray[coor.getRow()][coor.getCol()];
+  }
+
+  public void setPieceAt(Piece piece, Coor coor) {
+    boardArray[coor.getRow()][coor.getCol()] = piece;
+  }
+
+  public void movePiece(Coor pieceCoor, Coor dest) {
+      Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
+      if (piece == null) {
+        throw new RuntimeException("NO PIECE AT " + pieceCoor.toString());
+      }
+      if ((piece.isRed() && !redTurn) || (!piece.isRed() && redTurn)) {
+        throw new RuntimeException("WRONG TURN ORDER " + piece.toString());
+      }
+      piece.movePiece(dest);
+  }
 
   @Override
   public String toString() {
@@ -93,6 +111,14 @@ public class Board {
       result += "\n";
     }
     return result;
+  }
+
+  // TODO
+
+
+  // Return all board states that can be reached from this board state in a single move.
+  public List<Board> getAdjacentBoards() {
+    return null;
   }
 
 

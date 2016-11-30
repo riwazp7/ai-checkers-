@@ -27,4 +27,18 @@ public class Piece {
   public Board getBoard() {
     return board;
   }
+
+  public void movePiece(Coor dest) {
+    if (board.getPieceAt(dest) != null) {
+      throw new RuntimeException("DEST COOR NOT EMPTY");
+    }
+    board.setPieceAt(null, coor);
+    board.setPieceAt(this, dest);
+    this.coor = dest;
+  }
+
+  @Override
+  public String toString() {
+    return "PIECE: " + coor.toString() + (red ? " RED" : " BLACK") + "\n";
+  }
 }
