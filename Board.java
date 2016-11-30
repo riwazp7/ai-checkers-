@@ -83,6 +83,7 @@ public class Board {
     boardArray[coor.getRow()][coor.getCol()] = piece;
   }
 
+  // WE SHOULD ALSO CHECK IF THE MOVE IS LEGAL.
   public void movePiece(Coor pieceCoor, Coor dest) {
       Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
       if (piece == null) {
