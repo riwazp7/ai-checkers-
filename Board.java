@@ -76,6 +76,26 @@ public class Board {
   }
 
 
+  @Override
+  public String toString() {
+    String result = "";
+    for (int i = 0; i < DEF_HEIGHT; i++) {
+      for (int j = 0; j < DEF_WIDTH; j++) {
+        Piece piece = boardArray[i][j];
+        if (piece == null) {
+          result += "X";
+        } else if (piece.isRed()) {
+          result += "R";
+        } else {
+          result += "B";
+        }
+      }
+      result += "\n";
+    }
+    return result;
+  }
+
+
   public static void main(String[] args) {
     // UNIT TESTS
   }
