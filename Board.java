@@ -92,8 +92,28 @@ public class Board {
       if ((piece.isRed() && !redTurn) || (!piece.isRed() && redTurn)) {
         throw new RuntimeException("WRONG TURN ORDER " + piece.toString());
       }
+      if (boardArray[dest.getRow()][dest.getCol()] != null) {
+	  throw new RuntimeException("DESTINATION OCCUPIED AT " + dest.toString());
+      }
       piece.movePiece(dest);
   }
+
+    // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
+    private boolean legalMove(Coor pieceCoor, Coor dest) {
+	Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
+	boolean legal = false;
+	// Only checks adjacent spaces, doesn't handle moves that take opponent's pieces
+	if (piece.isRed() || piece.isKing()) {
+	    if ((dest.getRow() - pieceCoor.getRow() == -1 || dest.getRow() - pieceCoor.getRow() == 1) && (dest.getCol() - pieceCoor.getCol() == -1)) {
+		legal = true;
+	    }
+	} else if (!piece.isBlack() || piece.isKing()) {
+	    if ((dest.getRow() - pieceCoor.getRow() == -1 || dest.getRow() - pieceCoor.getRow() == 1) && (dest.getCol() - pieceCoor.getCol() == 1)) {
+		legal = true;
+	    }
+	}
+	
+    }
 
   @Override
   public String toString() {

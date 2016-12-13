@@ -11,6 +11,9 @@ public class Piece {
   // True if this is a red piece. False if this is a black piece.
   boolean red;
 
+  //True if this piece is a king. Kings can move forward and backward. Pieces are crowned (kinged?) when they reach the other side of the board
+  boolean king;
+
   // Each piece is associated with the board state it belongs to. This allows
   // an additional layer of abstraction. For ex., the moves that a piece can
   // make can be obtained by calling a method in this object.
@@ -24,6 +27,10 @@ public class Piece {
     return red;
   }
 
+  public boolean isKing() {
+    return king;
+  }
+
   public Board getBoard() {
     return board;
   }
@@ -35,6 +42,10 @@ public class Piece {
     board.setPieceAt(null, coor);
     board.setPieceAt(this, dest);
     this.coor = dest;
+  }
+
+  public void makeKing() {
+    king = true;
   }
 
   @Override
