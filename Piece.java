@@ -35,6 +35,11 @@ public class Piece {
     return board;
   }
 
+  // Returns the moves available to this piece in a list
+  public ArrayList<Coor> getMoves() {
+    return null;
+  }
+
   public void movePiece(Coor dest) {
     if (board.getPieceAt(dest) != null) {
       throw new RuntimeException("DEST COOR NOT EMPTY");
