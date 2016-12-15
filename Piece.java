@@ -43,9 +43,6 @@ public class Piece {
   }
 
   public void movePiece(Coor dest) {
-      /*    if (board.getPieceAt(dest) != null) {
-      throw new RuntimeException("DEST COOR NOT EMPTY");
-      }*/
     board.setPieceAt(null, coor);
     board.setPieceAt(this, dest);
     this.coor = dest;
