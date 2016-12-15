@@ -22,10 +22,6 @@ public class Board {
   // True iff red player's turn to play
   private boolean redTurn;
 
-  // Track the point earned by each color at this board state.
-  private int redPoints;
-  private int blackPoints;
-
   /*
    * This constructor creates a board state from lists of Black and Red pieces Coordinates.
    * Will probably only use it to create the initial board state.
@@ -33,8 +29,6 @@ public class Board {
   public Board(List<Coor> redCoors, List<Coor> blackCoors, boolean redTurn) {
 
     this.redTurn = redTurn;
-    this.redPoints = 0;
-    this.blackPoints = 0;
 
     for (Coor coor : redCoors) {
       Piece piece = new RedPiece(coor, this);
@@ -68,8 +62,6 @@ public class Board {
       boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
     }
     this.redTurn = board.redTurn();
-    this.redPoints = board.redPoints;
-    this.blackPoints = board.blackPoints;
   }
 
   public List<Piece> getRedPieces() {
@@ -115,13 +107,6 @@ public class Board {
     return this.redTurn;
   }
 
-  public int getRedPoints() {
-    return redPoints;
-  }
-
-  public int getBlackPoints() {
-    return blackPoints;
-  }
 
     // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
     /*    private boolean legalMove(Coor pieceCoor, Coor dest) {

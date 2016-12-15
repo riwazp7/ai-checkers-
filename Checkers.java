@@ -25,6 +25,9 @@ public final class Checkers {
 
   // This method should return initial board coordinates for Red and Black pieces.
   public static Pair<List<Coor>, List<Coor>> getInitialPieces() {
+    List<Coor> redPieces = new ArrayList<>();
+    List<Coor> blackPieces = new ArrayList<>();
+    Pair<List<Coor>, List<Coor>> result = new Pair<>(redPieces, blackPieces);
     return null;
   }
 
