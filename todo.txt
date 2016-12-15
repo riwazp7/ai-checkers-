@@ -1,0 +1,5 @@
+TODO
+
+- check legality of moves
+- find moves
+- find adjacent boards

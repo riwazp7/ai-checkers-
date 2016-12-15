@@ -99,7 +99,7 @@ public class Board {
   }
 
     // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
-    private boolean legalMove(Coor pieceCoor, Coor dest) {
+    /*    private boolean legalMove(Coor pieceCoor, Coor dest) {
 	Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
 	boolean legal = false;
 	// Only checks adjacent spaces, doesn't handle moves that take opponent's pieces
@@ -113,7 +113,7 @@ public class Board {
 	    }
 	}
 	
-    }
+	}*/
 
   @Override
   public String toString() {
