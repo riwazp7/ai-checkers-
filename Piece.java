@@ -2,6 +2,7 @@
  * A game piece in a Checkers Board
  * (c) Riwaz Poudyal, Julian Vera, Mark Talbot
  */
+import java.util.ArrayList;
 
 public class Piece {
 
