@@ -5,7 +5,7 @@
 
 import java.util.ArrayList;
 
-public class Checkers {
+public final class Checkers {
 
   public static void main(String[] args) {
     // Construct the initial board state.

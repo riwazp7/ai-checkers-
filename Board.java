@@ -57,6 +57,7 @@ public class Board {
       blackPieces.add(newPiece);
       boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
     }
+    this.redTurn = board.redTurn();
   }
 
   public ArrayList<Piece> getRedPieces() {
@@ -96,6 +97,10 @@ public class Board {
 	  throw new RuntimeException("DESTINATION OCCUPIED AT " + dest.toString());
       }
       piece.movePiece(dest);
+  }
+
+  public boolean redTurn() {
+    return this.redTurn;
   }
 
     // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
