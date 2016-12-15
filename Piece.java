@@ -3,6 +3,7 @@
  * (c) Riwaz Poudyal, Julian Vera, Mark Talbot
  */
 import java.util.ArrayList;
+import java.util.List;
 
 public class Piece {
 
@@ -52,6 +53,11 @@ public class Piece {
 
   public void makeKing() {
     king = true;
+  }
+
+  // return all possible moves for this piece
+  public List<Coor> getLegalMoves() {
+    return null;
   }
 
   @Override

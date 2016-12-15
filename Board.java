@@ -22,9 +22,14 @@ public class Board {
   // True iff red player's turn to play
   private boolean redTurn;
 
+  // Track the point earned by each color at this board state.
   private int redPoints;
   private int blackPoints;
 
+  /*
+   * This constructor creates a board state from lists of Black and Red pieces Coordinates.
+   * Will probably only use it to create the initial board state.
+   */
   public Board(List<Coor> redCoors, List<Coor> blackCoors, boolean redTurn) {
 
     this.redTurn = redTurn;
@@ -49,7 +54,7 @@ public class Board {
     this(redCoors, blackCoors, false);
   }
 
-  // Deep clone a board state
+  // Deep clone a board state. This is used if we want new Board state equal to a given board state.
   public Board(Board board) {
     for (Piece piece : board.getRedPieces()) {
       Piece newPiece = new RedPiece(piece, this);
@@ -164,13 +169,15 @@ public class Board {
   // Same if black's turn.
   public List<Board> getAdjacentBoards() {
     List<Board> result = new ArrayList<>();
-    if (redTurn) {
-      for (Piece piece : getRedPieces()) {
+    List<Piece> pieces;
+    if (redTurn) pieces = getRedPieces();
+    else pieces = getBlackPieces();
 
-      }
-    } else {
-      for (Piece piece : getBlackPieces()) {
-
+    for (Piece piece : pieces) {
+      for (Coor coor : piece.getLegalMoves()) {
+        Board board = new Board(this);
+        board.movePiece(piece.getCoor(), coor);
+        result.add(board);
       }
     }
     return null;
