@@ -24,11 +24,31 @@ public final class Checkers {
   }
 
   // This method should return initial board coordinates for Red and Black pieces.
-  public static Pair<List<Coor>, List<Coor>> getInitialPieces() {
-    List<Coor> redPieces = new ArrayList<>();
-    List<Coor> blackPieces = new ArrayList<>();
-    Pair<List<Coor>, List<Coor>> result = new Pair<>(redPieces, blackPieces);
-    return null;
+  public static Pair<List<Piece>, List<Piece>> getInitialPieces() {
+      List<Piece> redPieces = new List<Piece>();
+      List<Piece> blackPieces = new List<Piece>();
+      for (int i = 0; i < 3; i++) {
+	  for (int j = (i + 1) % 2; j < 8; j += 2) {
+	      redPieces.add(new RedPiece(i, j, board));
+	  }
+      }
+
+      for (int i = 5; i < 8; i++) {
+	  for (int j = (i + 1) % 2; j < 8; j += 2) {
+	      blackPieces.add(new BlackPiece(i, j, board));
+	  }
+      }
+      Pair<List<Piece>, List<Piece>> result = new Pair<List<Piece>, List<Piece>>(redPieces, blackPieces);
+      return result;
   }
 
+
+    public static void main (String [] args) {
+	Scanner s = new Scanner(System.in);
+	System.out.println("Hello, Let's Play Checkers!");
+	Board board = new Board(getInitialPieces().x, getInitialPieces().y, false);
+	while (!gameOver) {
+	    
+	}
+    }
 }

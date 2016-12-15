@@ -1,25 +1,18 @@
-/* RedPiece.java
- * A  red colored game piece in a Checkers Board
- * (c) Riwaz Poudyal, Julian Vera, Mark Talbot
+/**
+ * Created by julianvera on 12/14/16.
  */
+public class RedPiece {
 
-public class RedPiece extends Piece {
+    // X and Y coordinates of piece
+    int x;
+    int y;
 
-  public RedPiece(Coor coor, Board board) {
-    this.coor = coor;
-    this.board = board;
-    this.red = true;
-  }
+    // pieces do not start out as kings
+    boolean isKing = false;
 
-  // Clone a red piece
-  public RedPiece(Piece redPiece, Board board) {
-    this.coor = redPiece.getCoor();
-    this.red = true;
-    this.board = board;
-  }
-
-  public static void main(String[] args) {
-    // UNIT TESTS
-  }
+    public RedPiece(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
 }
