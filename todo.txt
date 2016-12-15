@@ -2,6 +2,5 @@ TODO
 
 -- Need a legalMove method that checks if a move is legal according to the rules.
 -- Finish getInitialPieces() method in Checkers.java. It should return the initial coordinates for all the pieces.
--- Scoring is unimplemented. We need to find scored earned when a move is made and update the scores.
 -- Maybe we should start thinking about the mini-max tree?
 -- How are we going to handle the UI? Maybe someone can quickly write it?

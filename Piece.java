@@ -7,8 +7,9 @@ import java.util.List;
 
 public class Piece {
 
-  // Coordinate of this piece in the board.
-  Coor coor;
+  protected int row;
+  protected int col;
+
 
   // True if this is a red piece. False if this is a black piece.
   boolean red;
@@ -20,10 +21,6 @@ public class Piece {
   // an additional layer of abstraction. For ex., the moves that a piece can
   // make can be obtained by calling a method in this object.
   Board board;
-
-  public Coor getCoor() {
-    return coor;
-  }
 
   public boolean isRed() {
     return red;
@@ -42,10 +39,20 @@ public class Piece {
     return null;
   }
 
-  public void movePiece(Coor dest) {
-    board.setPieceAt(null, coor);
-    board.setPieceAt(this, dest);
-    this.coor = dest;
+  public void movePiece(int destRow, int destCol) {
+    board.setPieceAt(null, row, col);
+    board.setPieceAt(this, destRow, destCol);
+    this.row = destRow;
+    this.col = destCol;
+  }
+
+
+  public int getRow() {
+    return row;
+  }
+
+  public int getCol() {
+    return col;
   }
 
   public void makeKing() {
@@ -59,6 +66,6 @@ public class Piece {
 
   @Override
   public String toString() {
-    return "PIECE: " + coor.toString() + (red ? " RED" : " BLACK") + "\n";
+    return "PIECE: " + row + " " + col + " " + (red ? " RED" : " BLACK") + "\n";
   }
 }

@@ -26,26 +26,25 @@ public class Board {
    * This constructor creates a board state from lists of Black and Red pieces Coordinates.
    * Will probably only use it to create the initial board state.
    */
-  public Board(List<Coor> redCoors, List<Coor> blackCoors, boolean redTurn) {
+  public Board(List<Piece> redPieces, List<Piece> blackPieces, boolean redTurn) {
 
     this.redTurn = redTurn;
 
-    for (Coor coor : redCoors) {
-      Piece piece = new RedPiece(coor, this);
-      redPieces.add(piece);
-      boardArray[coor.getRow()][coor.getCol()] = piece;
+    for (Piece piece : redPieces) {
+      boardArray[piece.getRow()][piece.getCol()] = piece;
     }
 
-    for (Coor coor : blackCoors) {
-      Piece piece = new BlackPiece(coor, this);
-      blackPieces.add(piece);
-      boardArray[coor.getRow()][coor.getCol()] = piece;
+    for (Piece piece : blackPieces) {
+      boardArray[piece.getRow()][piece.getCol()] = piece;
     }
+
+    this.redPieces = redPieces;
+    this.blackPieces = blackPieces;
   }
 
   // Defaults to black player's turn as the black player starts first.
-  public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors) {
-    this(redCoors, blackCoors, false);
+  public Board(ArrayList<Piece> redPieces, ArrayList<Piece> blackPieces) {
+    this(redPieces, blackPieces, false);
   }
 
   // Deep clone a board state. This is used if we want new Board state equal to a given board state.
@@ -53,13 +52,13 @@ public class Board {
     for (Piece piece : board.getRedPieces()) {
       Piece newPiece = new RedPiece(piece, this);
       redPieces.add(newPiece);
-      boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
+      boardArray[newPiece.getRow()][newPiece.getCol()] = newPiece;
     }
 
     for (Piece piece : board.getBlackPieces()) {
       Piece newPiece = new BlackPiece(piece, this);
       blackPieces.add(newPiece);
-      boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
+      boardArray[newPiece.getRow()][newPiece.getCol()] = newPiece;
     }
     this.redTurn = board.redTurn();
   }
@@ -76,19 +75,14 @@ public class Board {
     return boardArray;
   }
 
-  public boolean isOccupied(Coor coor) {
-    return (boardArray[coor.getRow()][coor.getCol()] != null);
+  public Piece getPieceAt(int row, int col) {
+    return boardArray[row][col];
   }
 
-  public Piece getPieceAt(Coor coor) {
-    return boardArray[coor.getRow()][coor.getCol()];
+  public void setPieceAt(Piece piece, int row, int col) {
+    boardArray[row][col] = piece;
   }
 
-  public void setPieceAt(Piece piece, Coor coor) {
-    boardArray[coor.getRow()][coor.getCol()] = piece;
-  }
-
-  // WE SHOULD ALSO CHECK IF THE MOVE IS LEGAL.
   public void movePiece(Coor pieceCoor, Coor dest) {
       Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
       if (piece == null) {
@@ -100,30 +94,12 @@ public class Board {
       if (boardArray[dest.getRow()][dest.getCol()] != null) {
 	  throw new RuntimeException("DESTINATION OCCUPIED AT " + dest.toString());
       }
-      piece.movePiece(dest);
+      piece.movePiece(dest.getRow(), dest.getCol());
   }
 
   public boolean redTurn() {
     return this.redTurn;
   }
-
-
-    // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
-    /*    private boolean legalMove(Coor pieceCoor, Coor dest) {
-	Piece piece = boardArray[pieceCoor.getRow()][pieceCoor.getCol()];
-	boolean legal = false;
-	// Only checks adjacent spaces, doesn't handle moves that take opponent's pieces
-	if (piece.isRed() || piece.isKing()) {
-	    if ((dest.getRow() - pieceCoor.getRow() == -1 || dest.getRow() - pieceCoor.getRow() == 1) && (dest.getCol() - pieceCoor.getCol() == -1)) {
-		legal = true;
-	    }
-	} else if (!piece.isBlack() || piece.isKing()) {
-	    if ((dest.getRow() - pieceCoor.getRow() == -1 || dest.getRow() - pieceCoor.getRow() == 1) && (dest.getCol() - pieceCoor.getCol() == 1)) {
-		legal = true;
-	    }
-	}
-	
-	}*/
 
   @Override
   public String toString() {
@@ -134,9 +110,11 @@ public class Board {
         if (piece == null) {
           result += "X";
         } else if (piece.isRed()) {
-          result += "R";
+          if (piece.isKing()) result += "R";
+          else result += "r";
         } else {
-          result += "B";
+          if (piece.isKing()) result += "B";
+          else result += "b";
         }
       }
       result += "\n";
@@ -144,38 +122,28 @@ public class Board {
     return result;
   }
 
-  // TODO
-
-
   // Return all board states that can be reached from this board state in a single move.
   // If red's turn, for each red piece, see which of the moves are possible. For each possible move,
   // create a new Board state using the clone board constructor and move the red piece to it's new position.
   // Then add this new board to the result list.
   // Same if black's turn.
   public List<Board> getAdjacentBoards() {
-    List<Board> result = new ArrayList<>();
-    List<Piece> pieces;
-    if (redTurn) pieces = getRedPieces();
-    else pieces = getBlackPieces();
-
-    for (Piece piece : pieces) {
-      for (Coor coor : piece.getLegalMoves()) {
-        Board board = new Board(this);
-        board.movePiece(piece.getCoor(), coor);
-        result.add(board);
-      }
-    }
     return null;
   }
 
   public void kingRed(RedPiece p) {
-    if(p.getCoor().getRow() == 0 && (p.getCoor().getCol() >= 0 && p.getCoor().getCol() < DEF_HEIGHT)) { p.king = true; }
+    if(p.getRow() == 0 && (p.getCol() >= 0 && p.getCol() < DEF_HEIGHT)) { p.king = true; }
     redTurn = false;
   }
 
   public void kingBlack(BlackPiece p) {
-    if(p.getCoor().getRow() == 7 && (p.getCoor().getCol() >= 0 && p.getCoor().getCol() < DEF_HEIGHT)) { p.king = true; }
+    if(p.getRow() == 7 && (p.getCol() >= 0 && p.getCol() < DEF_HEIGHT)) { p.king = true; }
     redTurn = true;
+  }
+
+  public boolean isInsideBoard(int row, int col) {
+    if ((row <= 7 && row >= 0) && (col <= 7 && col >= 0)) return true;
+    return false;
   }
 
 
