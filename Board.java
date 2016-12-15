@@ -183,6 +183,16 @@ public class Board {
     return null;
   }
 
+  public void kingRed(RedPiece p) {
+    if(p.getCoor().getRow() == 0 && (p.getCoor().getCol() >= 0 && p.getCoor().getCol() < DEF_HEIGHT)) { p.king = true; }
+    redTurn = false;
+  }
+
+  public void kingBlack(BlackPiece p) {
+    if(p.getCoor().getRow() == 7 && (p.getCoor().getCol() >= 0 && p.getCoor().getCol() < DEF_HEIGHT)) { p.king = true; }
+    redTurn = true;
+  }
+
 
   public static void main(String[] args) {
     // UNIT TESTS
