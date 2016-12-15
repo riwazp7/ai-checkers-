@@ -158,7 +158,21 @@ public class Board {
 
 
   // Return all board states that can be reached from this board state in a single move.
+  // If red's turn, for each red piece, see which of the moves are possible. For each possible move,
+  // create a new Board state using the clone board constructor and move the red piece to it's new position.
+  // Then add this new board to the result list.
+  // Same if black's turn.
   public List<Board> getAdjacentBoards() {
+    List<Board> result = new ArrayList<>();
+    if (redTurn) {
+      for (Piece piece : getRedPieces()) {
+
+      }
+    } else {
+      for (Piece piece : getBlackPieces()) {
+
+      }
+    }
     return null;
   }
 

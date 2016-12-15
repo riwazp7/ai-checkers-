@@ -1,5 +1,5 @@
 TODO
 
-- check legality of moves
-- find moves
-- find adjacent boards
+-- Need a legalMove method that checks if a move is legal according to the rules.
+-- I added some comments to the getAdjacentBoard method. It is still unfinished.
+-- Finish getInitialPieces() method in Checkers.java. It should return the initial coordinates for all the pieces.
