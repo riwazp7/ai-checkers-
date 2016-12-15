@@ -4,12 +4,13 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class Checkers {
 
   public static void main(String[] args) {
     // Construct the initial board state.
-
+    Board board = new Board(getInitialPieces().x, getInitialPieces().y, false);
   }
 
   // Return initial coordinates for the red pieces
@@ -19,6 +20,11 @@ public final class Checkers {
 
   // Return initial coordinates for the black pieces
   public static ArrayList<Coor> getBlackCoors() {
+    return null;
+  }
+
+  // This method should return initial board coordinates for Red and Black pieces.
+  public static Pair<List<Coor>, List<Coor>> getInitialPieces() {
     return null;
   }
 

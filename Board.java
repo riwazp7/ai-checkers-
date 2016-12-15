@@ -15,16 +15,21 @@ public class Board {
   /* A state of the Checker's board depends on the positions of the red and black pieces and whose turn it is.
    * Each piece's piece object is stored in both a List and in the 2D array.
    */
-  private ArrayList<Piece> redPieces = new ArrayList<>();
-  private ArrayList<Piece> blackPieces = new ArrayList<>();
+  private List<Piece> redPieces = new ArrayList<>();
+  private List<Piece> blackPieces = new ArrayList<>();
   private Piece[][] boardArray = new Piece[DEF_HEIGHT][DEF_WIDTH];
 
   // True iff red player's turn to play
   private boolean redTurn;
 
-  public Board(ArrayList<Coor> redCoors, ArrayList<Coor> blackCoors, boolean redTurn) {
+  private int redPoints;
+  private int blackPoints;
+
+  public Board(List<Coor> redCoors, List<Coor> blackCoors, boolean redTurn) {
 
     this.redTurn = redTurn;
+    this.redPoints = 0;
+    this.blackPoints = 0;
 
     for (Coor coor : redCoors) {
       Piece piece = new RedPiece(coor, this);
@@ -58,13 +63,15 @@ public class Board {
       boardArray[newPiece.getCoor().getRow()][newPiece.getCoor().getCol()] = newPiece;
     }
     this.redTurn = board.redTurn();
+    this.redPoints = board.redPoints;
+    this.blackPoints = board.blackPoints;
   }
 
-  public ArrayList<Piece> getRedPieces() {
+  public List<Piece> getRedPieces() {
     return redPieces;
   }
 
-  public ArrayList<Piece> getBlackPieces() {
+  public List<Piece> getBlackPieces() {
     return blackPieces;
   }
 
@@ -101,6 +108,14 @@ public class Board {
 
   public boolean redTurn() {
     return this.redTurn;
+  }
+
+  public int getRedPoints() {
+    return redPoints;
+  }
+
+  public int getBlackPoints() {
+    return blackPoints;
   }
 
     // Checks if the proposed move is legal. Assumes that top left corner is (0,0) and bottom right is (7,7) && red moves bottom-top while black moves top-bottom
