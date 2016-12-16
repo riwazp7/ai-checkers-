@@ -16,10 +16,10 @@ public class Board implements Comparable<Board> {
 	private final String empty = "#";
 
 	// ArrayList<Pieces>
-	List<Piece> blackPieces = new ArrayList<Piece>();
+	List<Piece> blackPieces = new ArrayList<>();
 
 	// ArrayList<Pieces>
-	List<Piece> redPieces = new ArrayList<Piece>();
+	List<Piece> redPieces = new ArrayList<>();
 
 	String[][] board = new String[DEF_HEIGHT][DEF_WIDTH];
 
@@ -532,18 +532,18 @@ public class Board implements Comparable<Board> {
 
 	
 	private String[][] copyBoard(String[][] b) {
-	String [][] newBoard = new String[8][8];
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-		newBoard[i][j] = b[i][j];
+		String [][] newBoard = new String[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+			newBoard[i][j] = b[i][j];
+			}
 		}
-	}
-	return newBoard;
+		return newBoard;
 	}
 
 
     private ArrayList<Piece> buildRedList (String[][] b) {
-	    ArrayList<Piece> redList = new ArrayList<Piece>();
+	    ArrayList<Piece> redList = new ArrayList<>();
 	    for (int i = 0; i < 8; i++) {
 	        for (int j = 0; j < 8; j++) {
 	            if (b[i][j].toLowerCase().equals("r")) {
@@ -680,14 +680,20 @@ public class Board implements Comparable<Board> {
 		b.noNull();
 		b.setRedKing(reds.get(1));
 		b.setRedKing(reds.get(2));
+<<<<<<< HEAD
 		b.setBlackKing(blacks.get(2));
 		b.printBoard();
+=======
+		b.setBlackKing(blacks.get(2));*/
+		System.out.println(b);
+>>>>>>> 56f1d4dd1e2e5491aefecb989198f9abc09ea3c1
 
 		ArrayList<Board> adjacent = b.possibleMoves();
 		for (Board c : adjacent) {
 			System.out.println("----------------------");
-			c.printBoard();
+			System.out.println(c);
 		}
+<<<<<<< HEAD
 		**/
 		// only add red pieces : test edge cases
 		reds.add(new Piece(7,9));
@@ -695,6 +701,7 @@ public class Board implements Comparable<Board> {
 		System.out.println(b.redCaptureLeft(reds.get(0)));
 
 
+=======
+>>>>>>> 56f1d4dd1e2e5491aefecb989198f9abc09ea3c1
 	}
-
 }
