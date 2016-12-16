@@ -59,11 +59,17 @@ public class Board {
 		return this.board;
 	}
 
-	public void setBlackPieces(ArrayList<Piece> pieces) {for(Piece p : pieces) { board[p.x][p.y] = "b"; }
+	public void setBlackPieces(ArrayList<Piece> pieces) {
+		for(Piece p : pieces) { 
+			board[p.x][p.y] = "b";
+	 	}
+
 	}
 
 	public void setRedPieces(ArrayList<Piece> pieces) {
-		for(Piece p : pieces) { board[p.x][p.y] = "r"; }
+		for(Piece p : pieces) { 
+			board[p.x][p.y] = "r";
+		}
 	}
 
 	/**
@@ -380,13 +386,17 @@ public class Board {
 					}
 
 				}
+				
+
 			} else {
 				// TODO: Needs to handle multijumps
 				for (Piece piece : redPieces) {
 					if (redCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "red");
-						Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						while (!newState.redCannotCapture()) {
+						redMultiJump(piece, new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+						piece = new Piece(piece.x - 2, piece.y - 2);
+						while (newState.redCaptureLeft(piece) || newState.redCaptureRight(piece)) {
 							piece = new Piece(piece.x - 2, piece.y - 2);
 							if (newState.redCaptureLeft(piece)) {
 								newBoard = makeCapture(piece, newState.board(), "left", "red");
@@ -396,11 +406,12 @@ public class Board {
 								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 							}
 						}
-						children.add(newState);
+						children.add(newState);*/
 					} 
 					if (redCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "red");
-						Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+						redMultiJump(piece, new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 						while (!newState.redCannotCapture()) {
 							piece = new Piece(piece.x - 2, piece.y + 2);
 							if (newState.redCaptureLeft(piece)) {
@@ -411,7 +422,7 @@ public class Board {
 								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 							}
 						}
-						children.add(newState);
+						children.add(newState);*/
 					}
 				}
 			}
@@ -426,12 +437,23 @@ public class Board {
 						newBoard = makeMove(piece, board, "right", "black");
 						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
 					}
+					if (piece.isKing()) {
+						if (moveRedLeft(piece)) {
+							newBoard = makeMove(piece, board, "left", "red");
+							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						} 
+						if (moveRedRight(piece)) {
+							newBoard = makeMove(piece, board, "right", "red");
+							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						}
+					}
 				}   
 			} else {
 				for (Piece piece : blackPieces) {
 					if (blackCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "black");
-						Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+						blackMultiJump(piece, new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 						while (!newState.blackCannotCapture()) {
 							piece = new Piece(piece.x + 2, piece.y - 2);
 							if (newState.blackCaptureLeft(piece)) {
@@ -442,11 +464,12 @@ public class Board {
 								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 							}
 						}
-						children.add(newState);
+						children.add(newState);*/
 					}
 					if (blackCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "black");
-						Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+						blackMultiJump(piece, new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 						while (!newState.blackCannotCapture()) {
 							piece = new Piece(piece.x + 2, piece.y + 2);
 							if (newState.blackCaptureLeft(piece)) {
@@ -457,7 +480,7 @@ public class Board {
 								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 							}
 						}
-						children.add(newState);
+						children.add(newState);*/
 					}
 				}
 			}
@@ -500,6 +523,56 @@ public class Board {
 	    }
 	    return blackList;
     }
+
+    private void redMultiJump(Piece piece, Board curState, ArrayList<Board> children) {
+		if (!curState.redCaptureLeft(piece) && !curState.redCaptureRight(piece)) {
+			children.add(curState);
+		} else {
+			if(curState.redCaptureLeft(piece)) {
+				String[][] newBoard = makeCapture(piece, curState.board(), "left", "red");
+				redMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+			}	
+			if(curState.redCaptureRight(piece)) {
+				String[][] newBoard = makeCapture(piece, curState.board(), "right", "red");
+				redMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+			}	
+			if (piece.isKing()) {
+				if (curState.redKingCaptureLeft(piece)) {
+					String[][] newBoard = makeCapture(piece, curState.board(), "left", "black");
+					redMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				}
+				if (curState.redKingCaptureRight(piece)) {
+					String[][] newBoard = makeCapture(piece, curState.board(), "right", "black");
+					redMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				}
+			}
+		}
+	}
+
+	private void blackMultiJump(Piece piece, Board curState, ArrayList<Board> children) {
+		if (!curState.blackCaptureLeft(piece) && !curState.blackCaptureRight(piece)) {
+			children.add(curState);
+		} else {
+			if(curState.blackCaptureLeft(piece)) {
+				String[][] newBoard = makeCapture(piece, curState.board(), "left", "black");
+				blackMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+			}	
+			if(curState.blackCaptureRight(piece)) {
+				String[][] newBoard = makeCapture(piece, curState.board(), "right", "black");
+				blackMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+			}	
+			if (piece.isKing()) {
+				if (curState.blackKingCaptureLeft(piece)) {
+					String[][] newBoard = makeCapture(piece, curState.board(), "left", "red");
+					blackMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				}
+				if (curState.blackKingCaptureRight(piece)) {
+					String[][] newBoard = makeCapture(piece, curState.board(), "right", "red");
+					blackMultiJump(piece, new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				}
+			}
+		}
+	}
 
 		/**
 		 * TESTING
@@ -551,6 +624,32 @@ public class Board {
 		}  
 		System.out.println(a.redCannotCapture());
 		System.out.println(a.blackCannotCapture());
+
+		blacks = new ArrayList<Piece>();
+		reds = new ArrayList<Piece>();
+		Board b = new Board(null, new String[8][8], blacks, reds, true);
+
+		blacks.add (new Piece (1, 2));
+		blacks.add (new Piece (3, 0));
+		blacks.add (new Piece (7, 2));
+		blacks.add (new Piece (6, 7));
+
+		reds.add (new Piece (1, 0));
+		reds.add (new Piece (0, 3));
+		reds.add (new Piece (1, 6));
+		reds.add (new Piece (2, 5));
+		reds.add (new Piece (7, 0));
+		reds.add (new Piece (7, 4));
+		reds.add (new Piece (4, 7));
+
+		b.setBlackPieces(blacks);
+		b.setRedPieces(reds);
+		b.setInvalidSpaces();
+		b.noNull();
+		//b.kingRed(reds.get(1));
+		//b.kingRed(reds.get(2));
+		//b.kingBlack(blacks.get(2));
+		b.printBoard();
 
 	}
 
