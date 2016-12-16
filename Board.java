@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,13 +78,13 @@ public class Board implements Comparable<Board> {
 	public void setInvalidSpaces() {
 
 		for(int i = 0; i < DEF_HEIGHT; i+=2) {
-			for(int j = 1; j < DEF_WIDTH; j+=2) {
+			for(int j = 0; j < DEF_WIDTH; j+=2) {
 			   board[i][j] = invalid;
 			}
 		}
 
 		for(int x = 1; x < DEF_HEIGHT; x+=2) {
-			for(int y = 0; y < DEF_WIDTH; y+=2) {
+			for(int y = 1; y < DEF_WIDTH; y+=2) {
 				board[x][y] = invalid;
 			}
 		}
@@ -591,6 +592,8 @@ public class Board implements Comparable<Board> {
 	}
 
 	public static void main(String[] args) {
+
+	    /**
 		ArrayList<Piece> reds = new ArrayList<Piece>();
 		ArrayList<Piece> blacks = new ArrayList<Piece>();
 
@@ -627,15 +630,19 @@ public class Board implements Comparable<Board> {
 		}  
 		System.out.println(a.redCannotCapture());
 		System.out.println(a.blackCannotCapture());
+         **/
 
-		blacks = new ArrayList<Piece>();
-		reds = new ArrayList<Piece>();
+
+		ArrayList<Piece> blacks = new ArrayList<Piece>();
+		ArrayList<Piece> reds = new ArrayList<Piece>();
 		Board b = new Board(null, new String[8][8], blacks, reds, true);
 
 		blacks.add (new Piece (1, 2));
 		blacks.add (new Piece (3, 0));
 		blacks.add (new Piece (7, 2));
 		blacks.add (new Piece (6, 7));
+
+
 
 		reds.add (new Piece (1, 0));
 		reds.add (new Piece (0, 3));
@@ -645,13 +652,14 @@ public class Board implements Comparable<Board> {
 		reds.add (new Piece (7, 4));
 		reds.add (new Piece (4, 7));
 
+
 		b.setBlackPieces(blacks);
 		b.setRedPieces(reds);
 		b.setInvalidSpaces();
 		b.noNull();
-		//b.kingRed(reds.get(1));
-		//b.kingRed(reds.get(2));
-		//b.kingBlack(blacks.get(2));
+		b.kingRed(reds.get(1));
+		b.kingRed(reds.get(2));
+		b.kingBlack(blacks.get(2));
 		b.printBoard();
 
 	}
