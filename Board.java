@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,21 +32,31 @@ public class Board {
 	// can a piece be captured in this board?
 	private boolean canCapture = false;
 
-	public Board(Board parent, String[][] board, ArrayList<Piece> blackPieces, ArrayList<Piece> redPieces, boolean redsTurn) {
-		this.parent = parent;
-	this.board = board;
-		this.blackPieces = blackPieces;
-		this.redPieces = redPieces;
-	this.redsTurn = redsTurn;
-	}
 
-	// in case we need to go back up in a tree
-	public Board parent() {
-		return this.parent;
-	}
-	
-	public String[][] board() {
-	return this.board;
+    public Board(Board parent, String[][] board, ArrayList<Piece> blackPieces, ArrayList<Piece> redPieces, boolean redsTurn) {
+        this.parent = parent;
+	    this.board = board;
+        this.blackPieces = blackPieces;
+        this.redPieces = redPieces;
+	    this.redsTurn = redsTurn;
+    }
+
+    public Board(Board parent, ArrayList<Piece> blackPieces, ArrayList<Piece> redPieces, boolean redsTurn) {
+        this.parent = parent;
+        this.blackPieces = blackPieces;
+        this.redPieces = redPieces;
+        this.redsTurn = redsTurn;
+        setBlackPieces(blackPieces);
+        setRedPieces(redPieces);
+    }
+
+    // in case we need to go back up in a tree
+    public Board parent() {
+        return this.parent;
+    }
+    
+    public String[][] board() {
+		return this.board;
 	}
 
 	public void setBlackPieces(ArrayList<Piece> pieces) {for(Piece p : pieces) { board[p.x][p.y] = "b"; }
@@ -467,29 +476,30 @@ public class Board {
 	return newBoard;
 	}
 
-	private ArrayList<Piece> buildRedList (String[][] b) {
-	ArrayList<Piece> redList = new ArrayList<Piece>();
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-		if (b[i][j].toLowerCase().equals("r")) {
-			redList.add(new Piece(i, j));
-		}
-		}
-	}
-	return redList;
-	}
 
-	private ArrayList<Piece> buildBlackList (String[][] b) {
-	ArrayList<Piece> blackList = new ArrayList<Piece>();
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-		if (b[i][j].toLowerCase().equals("b")) {
-			blackList.add(new Piece(i, j));
-		}
-		}
-	}
-	return blackList;
-	}
+    private ArrayList<Piece> buildRedList (String[][] b) {
+	    ArrayList<Piece> redList = new ArrayList<Piece>();
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            if (b[i][j].toLowerCase().equals("r")) {
+		            redList.add(new Piece(i, j));
+		        }
+	        }
+	    }
+	    return redList;
+    }
+
+    private ArrayList<Piece> buildBlackList (String[][] b) {
+	    ArrayList<Piece> blackList = new ArrayList<Piece>();
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+		        if (b[i][j].toLowerCase().equals("b")) {
+		            blackList.add(new Piece(i, j));
+		        }
+	        }
+	    }
+	    return blackList;
+    }
 
 		/**
 		 * TESTING
