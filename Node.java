@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Node {
 
     Board board;
-    ArrayList<Node> children;
+    ArrayList<Node> children = new ArrayList<>();
     int depth;
 
 
