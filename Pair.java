@@ -1,6 +1,6 @@
 /* Pair.java
  * A generic class to hold a pair of any two objects
- * (c) Riwaz Poudyal, Julian Vera, Mark Talbot
+ * (c) Riwaz Poudyal, Julian Vera, Marc Talbott
  */
 
 public class Pair<X,Y> {

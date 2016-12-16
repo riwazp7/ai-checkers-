@@ -5,6 +5,7 @@ public class Checkers {
     static Board board;
     static ArrayList<Piece> redPieces;
     static ArrayList<Piece> blackPieces;
+    public boolean reset;
   //  static Minimax minimax;
 
     public Checkers() {
@@ -59,55 +60,56 @@ public class Checkers {
         MiniMax minimax = new MiniMax(board);
         int i = 0;
         System.out.println("Let's play Checkers! You go first.");
-        while (i < 7) {
+        while (!board.gameOver()) {
             board.printBoard();
             if (redTurn) {
+                Pair<Integer,Integer> pieceCoor;
+                Pair<Integer,Integer> destCoor;
+                Piece p;
+
                 System.out.println("Which piece would you like to move?");
-                System.out.print("Row: ");
-                int pr  = s.nextInt();
-                System.out.print("Column: ");
-                int pc = s.nextInt();
-                while (!checkers.validPiece(pr, pc)) {
-                    System.out.println("Please select a valid piece: ");
-                    System.out.print("Row: ");
-                    pr  = s.nextInt();
-                    System.out.print("Column: ");
-                    pc = s.nextInt();
-                }
-                Piece p = new Piece (pr, pc);
-                if (board.board()[pr][pc].equals("R")) {
-                    p.isKing = true;
-                }
-                System.out.println("And where would you like to move it?");
-                System.out.print("Row: ");
-                int dr  = s.nextInt();
-                System.out.print("Column: ");
-                int dc = s.nextInt();
-                while (!checkers.validMove(p, dr, dc)) {
-                    System.out.println("Please enter a valid move: ");  
-                    System.out.print("Row: ");
-                    dr  = s.nextInt();
-                    System.out.print("Column: ");
-                    dc = s.nextInt();        
-                }
+                pieceCoor = checkers.getCoor(s, checkers);
+                checkers.reset = false;
+                do {
+                    if (checkers.reset) { 
+                        pieceCoor = new Pair<Integer,Integer>(-1, -1);
+                        checkers.reset = false;
+                    }
+                    while (!checkers.validPiece(pieceCoor.x, pieceCoor.y)) {
+                        System.out.println("Please select a valid piece: ");
+                        pieceCoor = checkers.getCoor(s, checkers);
+                    }
+                    p = new Piece (pieceCoor.x, pieceCoor.y);
+                    if (board.board()[pieceCoor.x][pieceCoor.y].equals("R")) {
+                        p.isKing = true;
+                    }
+
+                    System.out.println("And where would you like to move it?");
+                    destCoor = checkers.getCoor(s, checkers);
+                    while (!checkers.reset && !checkers.validMove(p, destCoor.x, destCoor.y)) {
+                        System.out.println("Please enter a valid move: ");  
+                        destCoor = checkers.getCoor(s, checkers);     
+                    } 
+                } while (checkers.reset);   
+                System.out.println(checkers.reset);
 
                 String dir = "";
                 String color = "";
                 String[][] nextBoard;
 
-                if (p.y - dc > 0) {
+                if (p.y - destCoor.y > 0) {
                     dir = "left";
                 } else {
                     dir = "right";
                 }
 
-                if (p.x - dr > 0) {
+                if (p.x - destCoor.x > 0) {
                     color = "red";
                 } else {
                     color = "black";
                 }
 
-                if (p.y - dc == 1 || p.y - dc == -1) {
+                if (p.y - destCoor.y == 1 || p.y - destCoor.y == -1) {
                     nextBoard = board.makeMove(p, board.board(), dir, color);
                 } else {
                     nextBoard = board.makeCapture(p, board.board(), dir, color);
@@ -117,11 +119,10 @@ public class Checkers {
                 minimax = new MiniMax(board);
                 board = minimax.getBestMove();
             }
-
-            board.printBoard();
+            board.kingRed();
+            board.kingBlack();
             redTurn = !redTurn;
             gameOver = board.gameOver();
-            i++;
         }
         System.out.println("Game Over!");
     }
@@ -130,14 +131,42 @@ public class Checkers {
         return (r >= 0 && r < 8) && (c >= 0 && c < 8) && board.board()[r][c].toLowerCase().equals("r");
     }
 
+    private Pair<Integer, Integer> getCoor(Scanner s, Checkers checkers) {
+        System.out.print("Row: ");
+        String next = s.next();
+        int x = -1;
+        if (next.equals("reset")) { 
+            checkers.reset = true; 
+        } else {
+            try {
+                x = Integer.parseInt(next);
+            } catch (NumberFormatException e) {
+                x = -1;
+            }
+        }
+        System.out.print("Column: ");
+        next = s.next();
+        int y = -1;
+        if (next.equals("reset")) { 
+            checkers.reset = true;
+        } else {
+            try {
+                y = Integer.parseInt(next);
+            } catch (NumberFormatException e) {
+                y = -1;
+            }
+        }
+        return new Pair<Integer, Integer>(x, y);
+    }
+
     private boolean validMove(Piece p, int dr, int dc) {
         boolean toReturn = false;
         if (p.x - dr == 1) {
             // Move red piece left or right
             if (p.y - dc == 1) {
-                toReturn = board.moveRedLeft(p);
+                toReturn = board.moveRedLeft(p) && !board.canCapture;
             } else if (p.y - dc == -1){
-                toReturn = board.moveRedRight(p);
+                toReturn = board.moveRedRight(p) && !board.canCapture;
             }
         } else if (p.x - dr == 2) {
             // Capture left or right
@@ -149,9 +178,9 @@ public class Checkers {
         } else if (p.x - dr == -1 && p.isKing()) {
             // king movement left or right
             if (p.y - dc == 1) {
-                toReturn = board.moveBlackLeft(p);
+                toReturn = board.moveBlackLeft(p) && !board.canCapture;
             } else if (p.y - dc == -1) {
-                toReturn = board.moveBlackRight(p);
+                toReturn = board.moveBlackRight(p) && !board.canCapture;
             }
         } else if (p.x - dr == -2 && p.isKing()) {
             // king capture left or right
@@ -161,7 +190,7 @@ public class Checkers {
                 toReturn = board.redKingCaptureRight(p);
             }
         }
-        return toReturn;
+        return toReturn && dr != -1 && dc != -1;
         
     }
 

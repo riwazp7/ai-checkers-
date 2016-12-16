@@ -29,7 +29,7 @@ public class Board implements Comparable<Board> {
 	Board parent;
 
 	// can a piece be captured in this board?
-	private boolean canCapture = false;
+	public boolean canCapture = false;
 
 
     public Board(Board parent, String[][] board, ArrayList<Piece> blackPieces, ArrayList<Piece> redPieces, boolean redsTurn) {
@@ -285,11 +285,13 @@ public class Board implements Comparable<Board> {
 
 	// crowing a piece ends the turn, even if there are possible jumps
 	// always check if a piece needs to be crowned?
-	public void kingRed(Piece p) {
-		if(p.x == 0 && (p.y >= 0 && p.y < DEF_HEIGHT)) { 
-			setRedKing(p); 
+	public void kingRed() {
+		for (Piece p : redPieces) {
+			if(p.x == 0 && (p.y >= 0 && p.y < DEF_HEIGHT)) { 
+				setRedKing(p); 
+			}
 		}
-		redsTurn = false;
+		//redsTurn = false;
 	}
 
 	private void setRedKing(Piece p) {
@@ -297,11 +299,13 @@ public class Board implements Comparable<Board> {
 		board[p.x][p.y] = "R";
 	}
 
-	public void kingBlack(Piece p) {
-		if(p.x == 7 && (p.y >= 0 && p.y < DEF_HEIGHT)) { 
-			setBlackKing(p);	
+	public void kingBlack() {
+		for (Piece p : blackPieces) {
+			if(p.x == 7 && (p.y >= 0 && p.y < DEF_HEIGHT)) { 
+				setBlackKing(p);	
+			}
 		}
-		redsTurn = true;
+		//redsTurn = true;
 	}
 
 	private void setBlackKing(Piece p) {
@@ -368,7 +372,7 @@ public class Board implements Comparable<Board> {
      * @return whether there are no red or black pieces on the board: game over!
      */
     public boolean gameOver() {
-        return (redPieces.isEmpty() || blackPieces.isEmpty() || trapped(this));
+        return (redPieces.isEmpty() || blackPieces.isEmpty());// || trapped(this));
     }
 
     public boolean trapped(Board board) {
@@ -569,12 +573,17 @@ public class Board implements Comparable<Board> {
 		 */
 
 	public void printBoard() {
+		System.out.println("     0  1  2  3  4  5  6  7   ");
+		System.out.println("    ==========================");
 		for(int i = 0; i < DEF_HEIGHT; i++) {
+			System.out.print(i + "  | ");
 			for(int j = 0; j < DEF_WIDTH; j++) {
 				System.out.print(board[i][j] + "  ");
 			}
+			System.out.print(" |");
 			System.out.println();
 		}
+		System.out.println("    ==========================");
 	}
 
 	@Override
