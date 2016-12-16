@@ -2,12 +2,16 @@ import java.util.ArrayList;
 
 public class Checkers {
 
-    public static final int MAX_TREE_DEPTH = 10;
+    public static final int MAX_TREE_DEPTH = 6;
 
     public Checkers() {
         ArrayList<Piece> redPieces = getRedPositions();
         ArrayList<Piece> blackPieces = getBlackPositions();
-        Board board = new Board(null, redPieces, blackPieces , false);
+        Board board = new Board(null, new String[8][8], blackPieces, redPieces , true);
+        board.setBlackPieces(blackPieces);
+        board.setRedPieces(redPieces);
+        board.setInvalidSpaces();
+        board.noNull();
         System.out.println(board);
 
         Node root = new Node(board, 0);
