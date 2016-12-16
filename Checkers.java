@@ -2,8 +2,6 @@ import java.util.ArrayList;
 
 public class Checkers {
 
-    public static final int MAX_TREE_DEPTH = 6;
-
     public Checkers() {
         ArrayList<Piece> redPieces = getRedPositions();
         ArrayList<Piece> blackPieces = getBlackPositions();
@@ -13,20 +11,6 @@ public class Checkers {
         board.setInvalidSpaces();
         board.noNull();
         System.out.println(board);
-
-        Node root = new Node(board, 0);
-        root.generateChildren();
-
-        for (Node node : root.children) {
-            System.out.print(node.board);
-        }
-
-        for (Board b : board.possibleMoves()) {
-            System.out.println(b);
-        }
-
-        System.out.print(board.possibleMoves().size());
-
 
     }
 
