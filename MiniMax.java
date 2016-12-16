@@ -3,7 +3,7 @@
  */
 public class MiniMax {
 
-    public static final int MAX_TREE_DEPTH = 2;
+    public static final int MAX_TREE_DEPTH = 4;
 
     Node root;
 
