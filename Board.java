@@ -107,7 +107,7 @@ public class Board implements Comparable<Board> {
 	 */
 	public boolean redCaptureLeft(Piece p) {
 		// if it goes off the board at any point, return false
-		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
+		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0 || p.x > 7 || p.y > 7) { return false; }
 		// if the adjacent left piece is red, return false
 		if(board[p.x - 1][p.y - 1].toLowerCase().equals("r")) { return false; }
 		// if the adjacent piece is black, but the square to jump in is blocked, return false
@@ -127,7 +127,7 @@ public class Board implements Comparable<Board> {
 	 */
 	public boolean redCaptureRight(Piece p) {
 		// if it goes off the board, return false
-		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
+		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x - 1 < 0 || p.x - 2 < 0 || p.x > 7 || p.y > 7) { return false; }
 		// if adjacent piece is red, return false
 		if(board[p.x - 1][p.y + 1].toLowerCase().equals("r")) { return false; }
 		// if the adjacent piece is black, but the square to jump in is blocked, return false
@@ -143,7 +143,7 @@ public class Board implements Comparable<Board> {
 
 	public boolean redKingCaptureLeft(Piece p) {
 		// if it goes off the board at any point, return false
-		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
+		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x + 1 > 7 || p.x + 2 > 7 || p.x > 7 || p.y > 7) { return false; }
 		// if the adjacent left piece is black, return false
 		if(board[p.x + 1][p.y - 1].toLowerCase().equals("r")) { return false; }
 		// if the adjacent piece is red, but the square to jump in is blocked, return false
@@ -159,7 +159,7 @@ public class Board implements Comparable<Board> {
 
 	public boolean redKingCaptureRight(Piece p) {
 		// if it goes off the board, return false
-		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
+		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7 || p.x > 7 || p.y > 7) { return false; }
 		// if adjacent piece is black, return false
 		if(board[p.x + 1][p.y + 1].toLowerCase().equals("r")) { return false; }
 		// if the adjacent piece is red, but the square to jump in is blocked, return false
@@ -196,7 +196,7 @@ public class Board implements Comparable<Board> {
 
 	public boolean blackCaptureLeft(Piece p) {
 		// if it goes off the board at any point, return false
-		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
+		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x + 1 > 7 || p.x + 2 > 7 || p.x > 7 || p.y > 7) { return false; }
 		// if the adjacent left piece is black, return false
 		if(board[p.x + 1][p.y - 1].toLowerCase().equals("b")) { return false; }
 		// if the adjacent piece is red, but the square to jump in is blocked, return false
@@ -217,7 +217,7 @@ public class Board implements Comparable<Board> {
 	 */
 	public boolean blackCaptureRight(Piece p) {
 		// if it goes off the board, return false
-		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
+		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7 || p.x > 7 || p.y > 7) { return false; }
 		// if adjacent piece is black, return false
 		if(board[p.x + 1][p.y + 1].toLowerCase().equals("b")) { return false; }
 		// if the adjacent piece is red, but the square to jump in is blocked, return false
@@ -233,7 +233,7 @@ public class Board implements Comparable<Board> {
 
 	public boolean blackKingCaptureLeft(Piece p) {
 		// if it goes off the board at any point, return false
-		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
+		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0 || p.x > 7 || p.y > 7) { return false; }
 		// if the adjacent left piece is red, return false
 		if(board[p.x - 1][p.y - 1].toLowerCase().equals("b")) { return false; }
 		// if the adjacent piece is black, but the square to jump in is blocked, return false
@@ -249,7 +249,7 @@ public class Board implements Comparable<Board> {
 
 	public boolean blackKingCaptureRight(Piece p) {
 		// if it goes off the board, return false
-		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
+		if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7 || p.x > 7 || p.y > 7) { return false; }
 		// if adjacent piece is black, return false
 		if(board[p.x + 1][p.y + 1].toLowerCase().equals("b")) { return false; }
 		// if the adjacent piece is red, but the square to jump in is blocked, return false
@@ -656,6 +656,8 @@ public class Board implements Comparable<Board> {
 
 		Board b = new Board(null, new String[8][8], blacks, reds, true);
 
+
+		/**
 	 	blacks.add (new Piece (6,1));
 		blacks.add (new Piece (4, 1));
 		blacks.add (new Piece (4, 3));
@@ -664,21 +666,21 @@ public class Board implements Comparable<Board> {
 
 
 		reds.add (new Piece (7,0));
-		/*reds.add (new Piece (0, 3));
+		reds.add (new Piece (0, 3));
 		reds.add (new Piece (1, 6));
 		reds.add (new Piece (2, 5));
 		reds.add (new Piece (7, 0));
 		reds.add (new Piece (7, 4));
-		reds.add (new Piece (4, 7));*/
+		reds.add (new Piece (4, 7));
 
 
 		b.setBlackPieces(blacks);
 		b.setRedPieces(reds);
 		b.setInvalidSpaces();
 		b.noNull();
-		/*b.setRedKing(reds.get(1));
+		b.setRedKing(reds.get(1));
 		b.setRedKing(reds.get(2));
-		b.setBlackKing(blacks.get(2));*/
+		b.setBlackKing(blacks.get(2));
 		b.printBoard();
 
 		ArrayList<Board> adjacent = b.possibleMoves();
@@ -686,6 +688,12 @@ public class Board implements Comparable<Board> {
 			System.out.println("----------------------");
 			c.printBoard();
 		}
+		**/
+		// only add red pieces : test edge cases
+		reds.add(new Piece(7,9));
+
+		System.out.println(b.redCaptureLeft(reds.get(0)));
+
 
 	}
 
