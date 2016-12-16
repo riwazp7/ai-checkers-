@@ -5,7 +5,7 @@ public class Evaluator {
 
     private static final int KING_VALUE = 10;
     private static final int PIECE_VALUE = 5;
-    
+
     public static Integer evaluate(Board board) {
         int redScore = 0;
         int blackScore = 0;
