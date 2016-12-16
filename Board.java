@@ -16,10 +16,10 @@ public class Board implements Comparable<Board> {
 	private final String empty = "#";
 
 	// ArrayList<Pieces>
-	List<Piece> blackPieces = new ArrayList<Piece>();
+	List<Piece> blackPieces = new ArrayList<>();
 
 	// ArrayList<Pieces>
-	List<Piece> redPieces = new ArrayList<Piece>();
+	List<Piece> redPieces = new ArrayList<>();
 
 	String[][] board = new String[DEF_HEIGHT][DEF_WIDTH];
 
@@ -532,18 +532,18 @@ public class Board implements Comparable<Board> {
 
 	
 	private String[][] copyBoard(String[][] b) {
-	String [][] newBoard = new String[8][8];
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-		newBoard[i][j] = b[i][j];
+		String [][] newBoard = new String[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+			newBoard[i][j] = b[i][j];
+			}
 		}
-	}
-	return newBoard;
+		return newBoard;
 	}
 
 
     private ArrayList<Piece> buildRedList (String[][] b) {
-	    ArrayList<Piece> redList = new ArrayList<Piece>();
+	    ArrayList<Piece> redList = new ArrayList<>();
 	    for (int i = 0; i < 8; i++) {
 	        for (int j = 0; j < 8; j++) {
 	            if (b[i][j].toLowerCase().equals("r")) {
@@ -679,14 +679,12 @@ public class Board implements Comparable<Board> {
 		/*b.setRedKing(reds.get(1));
 		b.setRedKing(reds.get(2));
 		b.setBlackKing(blacks.get(2));*/
-		b.printBoard();
+		System.out.println(b);
 
 		ArrayList<Board> adjacent = b.possibleMoves();
 		for (Board c : adjacent) {
 			System.out.println("----------------------");
-			c.printBoard();
+			System.out.println(c);
 		}
-
 	}
-
 }
