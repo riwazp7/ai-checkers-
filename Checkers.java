@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import org.apache.commons.lang3.StringUtils;
 
 public class Checkers {
-    Board board;
-    ArrayList<Piece> redPieces;
-    ArrayList<Piece> blackPieces;
+    static Board board;
+    static ArrayList<Piece> redPieces;
+    static ArrayList<Piece> blackPieces;
+  //  static Minimax minimax;
 
     public Checkers() {
         redPieces = getRedPositions();
@@ -16,8 +16,8 @@ public class Checkers {
         board.setInvalidSpaces();
         board.noNull();
 
-        MiniMax miniMax = new MiniMax(board);
-        System.out.println(miniMax.getBestMove());
+       // minimax = new MiniMax(board);
+        //ystem.out.println(miniMax.getBestMove());
 
     }
 
@@ -54,20 +54,24 @@ public class Checkers {
     public static void main(String[] args) {
         Checkers checkers = new Checkers();
         boolean gameOver = false;
+        boolean redTurn = true;
         Scanner s = new Scanner(System.in);
+        MiniMax minimax = new MiniMax(board);
+        int i = 0;
         System.out.println("Let's play Checkers! You go first.");
-        while (!gameOver) {
+        while (i < 7) {
+            board.printBoard();
             if (redTurn) {
                 System.out.println("Which piece would you like to move?");
                 System.out.print("Row: ");
                 int pr  = s.nextInt();
-                System.out.println("Column: ");
+                System.out.print("Column: ");
                 int pc = s.nextInt();
-                while (!validPiece(r, c)) {
+                while (!checkers.validPiece(pr, pc)) {
                     System.out.println("Please select a valid piece: ");
                     System.out.print("Row: ");
                     pr  = s.nextInt();
-                    System.out.println("Column: ");
+                    System.out.print("Column: ");
                     pc = s.nextInt();
                 }
                 Piece p = new Piece (pr, pc);
@@ -77,57 +81,84 @@ public class Checkers {
                 System.out.println("And where would you like to move it?");
                 System.out.print("Row: ");
                 int dr  = s.nextInt();
-                System.out.println("Column: ");
+                System.out.print("Column: ");
                 int dc = s.nextInt();
-                while (!d.validMove(p, dr, dc)) {
+                while (!checkers.validMove(p, dr, dc)) {
                     System.out.println("Please enter a valid move: ");  
                     System.out.print("Row: ");
                     dr  = s.nextInt();
-                    System.out.println("Column: ");
+                    System.out.print("Column: ");
                     dc = s.nextInt();        
                 }
 
-                
-                makeMove();
-                printBoard();
+                String dir = "";
+                String color = "";
+                String[][] nextBoard;
+
+                if (p.y - dc > 0) {
+                    dir = "left";
+                } else {
+                    dir = "right";
+                }
+
+                if (p.x - dr > 0) {
+                    color = "red";
+                } else {
+                    color = "black";
+                }
+
+                if (p.y - dc == 1 || p.y - dc == -1) {
+                    nextBoard = board.makeMove(p, board.board(), dir, color);
+                } else {
+                    nextBoard = board.makeCapture(p, board.board(), dir, color);
+                }
+                board = new Board(board, nextBoard, Board.buildBlackList(nextBoard), Board.buildRedList(nextBoard), !redTurn);
             } else {
-                searchMove();
-                pri
+                minimax = new MiniMax(board);
+                board = minimax.getBestMove();
             }
+
+            board.printBoard();
             redTurn = !redTurn;
-            gameOver = 
+            gameOver = board.gameOver();
+            i++;
         }
+        System.out.println("Game Over!");
     }
 
     private boolean validPiece(int r, int c) {
-        return (r >= 0 && r < 8) && (c >= 0 && c < 8) && board.board()[r][c];
+        return (r >= 0 && r < 8) && (c >= 0 && c < 8) && board.board()[r][c].toLowerCase().equals("r");
     }
 
     private boolean validMove(Piece p, int dr, int dc) {
         boolean toReturn = false;
         if (p.x - dr == 1) {
+            // Move red piece left or right
             if (p.y - dc == 1) {
-                toReturn = moveRedLeft(p);
+                toReturn = board.moveRedLeft(p);
             } else if (p.y - dc == -1){
-                toReturn = moveRedRight(p);
+                toReturn = board.moveRedRight(p);
             }
         } else if (p.x - dr == 2) {
+            // Capture left or right
             if (p.y - dc == 2) {
-                toReturn = redCaptureLeft(p);
+                toReturn = board.redCaptureLeft(p);
             } else if (p.y - dc == -2) {
-                toReturn = redCaptureRight(p);
+                toReturn = board.redCaptureRight(p);
             }
         } else if (p.x - dr == -1 && p.isKing()) {
+            // king movement left or right
             if (p.y - dc == 1) {
-                toReturn = moveBlackLeft(p);
+                toReturn = board.moveBlackLeft(p);
             } else if (p.y - dc == -1) {
-                toReturn = moveBlackRight(p);
+                toReturn = board.moveBlackRight(p);
             }
         } else if (p.x - dr == -2 && p.isKing()) {
+            // king capture left or right
             if (p.y - dc == 2) {
-                toReturn = redKingCaptureLeft(p);
+                toReturn = board.redKingCaptureLeft(p);
             } else if (p.y - dc == -2) {
-                toReturn = redKingCaptureRight(p);
+                toReturn = board.redKingCaptureRight(p);
             }
         }
         return toReturn;

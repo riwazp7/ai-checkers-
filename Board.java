@@ -367,8 +367,8 @@ public class Board implements Comparable<Board> {
      * param: board
      * @return whether there are no red or black pieces on the board: game over!
      */
-    public boolean gameOver(Board board) {
-        return (board.redPieces.isEmpty() || board.blackPieces.isEmpty() || trapped(board));
+    public boolean gameOver() {
+        return (redPieces.isEmpty() || blackPieces.isEmpty() || trapped(this));
     }
 
     public boolean trapped(Board board) {
@@ -405,20 +405,20 @@ public class Board implements Comparable<Board> {
 				for (Piece piece : redPieces) {
 					if (moveRedLeft(piece)) {
 						newBoard = makeMove(piece, board, "left", "red");
-						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 					} 
 					if (moveRedRight(piece)) {
 						newBoard = makeMove(piece, board, "right", "red");
-						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 					}
 					if (piece.isKing()) {
 						if(moveBlackLeft(piece)) {
 							newBoard = makeMove(piece, board, "left", "black");
-							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+							children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 						}
 						if(moveBlackRight(piece)) {
 							newBoard = makeMove(piece, board, "right", "black");
-							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+							children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 						}
 					}
 
@@ -430,33 +430,34 @@ public class Board implements Comparable<Board> {
 				for (Piece piece : redPieces) {
 					if (redCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "red");
-						redMultiJump(new Piece(piece.x - 2, piece.y - 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						redMultiJump(new Piece(piece.x - 2, piece.y - 2), new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 					} 
 					if (redCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "red");
-						Board t = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						redMultiJump(new Piece(piece.x - 2, piece.y + 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
-				}
+						Board t = new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn);
+						redMultiJump(new Piece(piece.x - 2, piece.y + 2), new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
+					}
+				}	
 			}
 		} else {
 			if (!canCapture) {
 				for (Piece piece : blackPieces) {
 					if (moveBlackLeft(piece)) {
 						newBoard = makeMove(piece, board, "left", "black");
-						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 					} 
 					if (moveBlackRight(piece)) {
 						newBoard = makeMove(piece, board, "right", "black");
-						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+						children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 					}
 					if (piece.isKing()) {
 						if (moveRedLeft(piece)) {
 							newBoard = makeMove(piece, board, "left", "red");
-							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+							children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 						} 
 						if (moveRedRight(piece)) {
 							newBoard = makeMove(piece, board, "right", "red");
-							children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+							children.add(new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn));
 						}
 					}
 				}   
@@ -464,11 +465,11 @@ public class Board implements Comparable<Board> {
 				for (Piece piece : blackPieces) {
 					if (blackCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "black");
-						blackMultiJump(new Piece(piece.x + 2, piece.y - 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						blackMultiJump(new Piece(piece.x + 2, piece.y - 2), new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 					}
 					if (blackCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "black");
-						blackMultiJump(new Piece(piece.x + 2, piece.y + 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+						blackMultiJump(new Piece(piece.x + 2, piece.y + 2), new Board(this, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 					}
 				}
 			}
@@ -477,7 +478,7 @@ public class Board implements Comparable<Board> {
 	}
 
 	
-	private String[][] copyBoard(String[][] b) {
+	public String[][] copyBoard(String[][] b) {
 		String [][] newBoard = new String[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -488,7 +489,7 @@ public class Board implements Comparable<Board> {
 	}
 
 
-    private ArrayList<Piece> buildRedList (String[][] b) {
+    public static ArrayList<Piece> buildRedList (String[][] b) {
 	    ArrayList<Piece> redList = new ArrayList<>();
 	    for (int i = 0; i < 8; i++) {
 	        for (int j = 0; j < 8; j++) {
@@ -500,7 +501,7 @@ public class Board implements Comparable<Board> {
 	    return redList;
     }
 
-    private ArrayList<Piece> buildBlackList (String[][] b) {
+    public static ArrayList<Piece> buildBlackList (String[][] b) {
 	    ArrayList<Piece> blackList = new ArrayList<Piece>();
 	    for (int i = 0; i < 8; i++) {
 	        for (int j = 0; j < 8; j++) {
@@ -519,20 +520,20 @@ public class Board implements Comparable<Board> {
 			
 			if(curState.redCaptureLeft(piece)) {
 				String[][] newBoard = makeCapture(piece, curState.board(), "left", "red");
-				redMultiJump(new Piece (piece.x - 2, piece.y - 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				redMultiJump(new Piece (piece.x - 2, piece.y - 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 			}	
 			if(curState.redCaptureRight(piece)) {
 				String[][] newBoard = makeCapture(piece, curState.board(), "right", "red");
-				redMultiJump(new Piece (piece.x - 2, piece.y + 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				redMultiJump(new Piece (piece.x - 2, piece.y + 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 			}	
 			if (piece.isKing()) {
 				if (curState.redKingCaptureLeft(piece)) {
 					String[][] newBoard = makeCapture(piece, curState.board(), "left", "black");
-					redMultiJump(new Piece (piece.x + 2, piece.y - 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+					redMultiJump(new Piece (piece.x + 2, piece.y - 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 				}
 				if (curState.redKingCaptureRight(piece)) {
 					String[][] newBoard = makeCapture(piece, curState.board(), "right", "black");
-					redMultiJump(new Piece (piece.x + 2, piece.y + 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+					redMultiJump(new Piece (piece.x + 2, piece.y + 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 				}
 			}
 		}
@@ -544,20 +545,20 @@ public class Board implements Comparable<Board> {
 		} else {
 			if(curState.blackCaptureLeft(piece)) {
 				String[][] newBoard = makeCapture(piece, curState.board(), "left", "black");
-				blackMultiJump(new Piece (piece.x + 2, piece.y - 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				blackMultiJump(new Piece (piece.x + 2, piece.y - 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 			}	
 			if(curState.blackCaptureRight(piece)) {
 				String[][] newBoard = makeCapture(piece, curState.board(), "right", "black");
-				blackMultiJump(new Piece (piece.x + 2, piece.y + 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+				blackMultiJump(new Piece (piece.x + 2, piece.y + 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 			}	
 			if (piece.isKing()) {
 				if (curState.blackKingCaptureLeft(piece)) {
 					String[][] newBoard = makeCapture(piece, curState.board(), "left", "red");
-					blackMultiJump(new Piece (piece.x - 2, piece.y - 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+					blackMultiJump(new Piece (piece.x - 2, piece.y - 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 				}
 				if (curState.blackKingCaptureRight(piece)) {
 					String[][] newBoard = makeCapture(piece, curState.board(), "right", "red");
-					blackMultiJump(new Piece (piece.x - 2, piece.y + 2), new Board(curState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
+					blackMultiJump(new Piece (piece.x - 2, piece.y + 2), new Board(curState, newBoard, Board.buildBlackList(newBoard), Board.buildRedList(newBoard), !redsTurn), children);
 				}
 			}
 		}
@@ -567,7 +568,7 @@ public class Board implements Comparable<Board> {
 		 * TESTING
 		 */
 
-	private void printBoard() {
+	public void printBoard() {
 		for(int i = 0; i < DEF_HEIGHT; i++) {
 			for(int j = 0; j < DEF_WIDTH; j++) {
 				System.out.print(board[i][j] + "  ");
@@ -596,14 +597,14 @@ public class Board implements Comparable<Board> {
 	public static void main(String[] args) {
 
 	    
-		ArrayList<Piece> reds = new ArrayList<>();
+		/*ArrayList<Piece> reds = new ArrayList<>();
 		ArrayList<Piece> blacks = new ArrayList<>();
 
 
 		Board b = new Board(null, new String[8][8], blacks, reds, true);
 
 
-		/**
+		
 	 	blacks.add (new Piece (6,1));
 		blacks.add (new Piece (4, 1));
 		blacks.add (new Piece (4, 3));
@@ -626,28 +627,24 @@ public class Board implements Comparable<Board> {
 		b.noNull();
 		b.setRedKing(reds.get(1));
 		b.setRedKing(reds.get(2));
-<<<<<<< HEAD
+
 		b.setBlackKing(blacks.get(2));
 		b.printBoard();
-=======
-		b.setBlackKing(blacks.get(2));*/
+		b.setBlackKing(blacks.get(2));
 		System.out.println(b);
->>>>>>> 56f1d4dd1e2e5491aefecb989198f9abc09ea3c1
+
 
 		ArrayList<Board> adjacent = b.possibleMoves();
 		for (Board c : adjacent) {
 			System.out.println("----------------------");
 			System.out.println(c);
 		}
-<<<<<<< HEAD
-		**/
+
+		
 		// only add red pieces : test edge cases
 		reds.add(new Piece(7,9));
 
 		System.out.println(b.redCaptureLeft(reds.get(0)));
-
-
-=======
->>>>>>> 56f1d4dd1e2e5491aefecb989198f9abc09ea3c1
+*/
 	}
 }
