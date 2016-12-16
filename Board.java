@@ -4,8 +4,7 @@ import java.util.List;
 /**
  * Created by julianvera on 12/14/16.
  */
-public class Board {
-
+public class Board implements Comparable<Board> {
 	// board size for most Checkers games
 	private final int DEF_HEIGHT = 8;
 	private final int DEF_WIDTH = 8;
@@ -585,6 +584,10 @@ public class Board {
 			}
 			System.out.println();
 		}
+	}
+
+	public int compareTo(Board board) {
+		return Evaluator.evaluate(board).compareTo(Evaluator.evaluate(this));
 	}
 
 	public static void main(String[] args) {
