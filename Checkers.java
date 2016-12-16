@@ -66,6 +66,8 @@ public class Checkers {
                 Pair<Integer,Integer> pieceCoor;
                 Pair<Integer,Integer> destCoor;
                 Piece p;
+                board.kingRed();
+                board.kingBlack();
 
                 System.out.println("Which piece would you like to move?");
                 pieceCoor = checkers.getCoor(s, checkers);
@@ -119,8 +121,6 @@ public class Checkers {
                 minimax = new MiniMax(board);
                 board = minimax.getBestMove();
             }
-            board.kingRed();
-            board.kingBlack();
             redTurn = !redTurn;
             gameOver = board.gameOver();
         }
