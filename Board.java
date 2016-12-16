@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,21 +107,16 @@ public class Board implements Comparable<Board> {
 	 */
 	public boolean redCaptureLeft(Piece p) {
 		// if it goes off the board at any point, return false
-		System.out.println("0");
 		if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
-		System.out.println("1");
 		// if the adjacent left piece is red, return false
 		if(board[p.x - 1][p.y - 1].toLowerCase().equals("r")) { return false; }
-		System.out.println("2");
 		// if the adjacent piece is black, but the square to jump in is blocked, return false
 		if( (board[p.x - 1][p.y - 1].toLowerCase().equals("b"))
 				&& (!board[p.x - 2][p.y - 2].equals(empty)) ) {
 				return false;
 		}
-		System.out.println("3");
 		// if there is no adjacent piece return false
 		if(board[p.x - 1][p.y - 1].equals(empty)) { return false; }
-		System.out.println("4");
 		// if all the other cases fail
 		return true;
 	}
@@ -545,8 +539,6 @@ public class Board implements Comparable<Board> {
 
     private void redMultiJump(Piece piece, Board curState, ArrayList<Board> children) {
 		if (!curState.redCaptureLeft(piece) && !curState.redCaptureRight(piece)) {
-			System.out.println("Left: " + curState.redCaptureLeft(piece));
-			System.out.println("Right: " + curState.redCaptureRight(piece));
 			children.add(curState);
 		} else {
 			
