@@ -29,8 +29,7 @@ public class Evaluator {
                 }
             }
         }
-
-        return redScore - blackScore;
+        return blackScore;
     }
 
     private static boolean isKing(Piece piece, Board board) {

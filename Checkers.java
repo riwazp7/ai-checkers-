@@ -15,7 +15,9 @@ public class Checkers {
         board.setRedPieces(redPieces);
         board.setInvalidSpaces();
         board.noNull();
-        System.out.println(board);
+
+        MiniMax miniMax = new MiniMax(board);
+        System.out.println(miniMax.getBestMove());
 
     }
 
