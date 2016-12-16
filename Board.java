@@ -396,7 +396,6 @@ public class Board implements Comparable<Board> {
 
 		ArrayList<Board> children = new ArrayList<Board>();
 		String[][] newBoard;
-		// need ArrayLists for black and red pieces that will be used to create new boards
 
 		// red's turn
 		setCanCapture();
@@ -406,9 +405,6 @@ public class Board implements Comparable<Board> {
 				for (Piece piece : redPieces) {
 					if (moveRedLeft(piece)) {
 						newBoard = makeMove(piece, board, "left", "red");
-						/*copyBoard(board);
-						newBoard[piece.x - 1][piece.y - 1] = board[piece.x][piece.y];
-						newBoard[piece.x][piece.y] = "#"; */
 						children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
 					} 
 					if (moveRedRight(piece)) {
@@ -434,38 +430,12 @@ public class Board implements Comparable<Board> {
 				for (Piece piece : redPieces) {
 					if (redCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "red");
-						redMultiJump(new Piece(piece.x - 2, piece.y + 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
-						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						piece = new Piece(piece.x - 2, piece.y - 2);
-						while (newState.redCaptureLeft(piece) || newState.redCaptureRight(piece)) {
-							piece = new Piece(piece.x - 2, piece.y - 2);
-							if (newState.redCaptureLeft(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "left", "red");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							} else if (newState.redCaptureRight(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "right", "red");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							}
-						}
-						children.add(newState);*/
+						redMultiJump(new Piece(piece.x - 2, piece.y - 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
 					} 
 					if (redCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "red");
 						Board t = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
 						redMultiJump(new Piece(piece.x - 2, piece.y + 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
-						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						while (!newState.redCannotCapture()) {
-							piece = new Piece(piece.x - 2, piece.y + 2);
-							if (newState.redCaptureLeft(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "left", "red");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							} else if (newState.redCaptureRight(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "right", "red");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							}
-						}
-						children.add(newState);*/
-					}
 				}
 			}
 		} else {
@@ -495,34 +465,10 @@ public class Board implements Comparable<Board> {
 					if (blackCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "black");
 						blackMultiJump(new Piece(piece.x + 2, piece.y - 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
-						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						while (!newState.blackCannotCapture()) {
-							piece = new Piece(piece.x + 2, piece.y - 2);
-							if (newState.blackCaptureLeft(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "left", "black");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							} else if (newState.blackCaptureRight(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "right", "black");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							}
-						}
-						children.add(newState);*/
 					}
 					if (blackCaptureRight(piece)) {
 						newBoard = makeCapture(piece, board, "right", "black");
 						blackMultiJump(new Piece(piece.x + 2, piece.y + 2), new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn), children);
-						/*Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-						while (!newState.blackCannotCapture()) {
-							piece = new Piece(piece.x + 2, piece.y + 2);
-							if (newState.blackCaptureLeft(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "left", "black");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							} else if (newState.blackCaptureRight(piece)) {
-								newBoard = makeCapture(piece, newState.board(), "right", "black");
-								newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
-							}
-						}
-						children.add(newState);*/
 					}
 				}
 			}
