@@ -1,3 +1,5 @@
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -368,6 +370,35 @@ public class Board implements Comparable<Board> {
 		newBoard[p.x + 1*color][p.y + 1*dir] = "#";
 		return newBoard;
 	}
+
+    /**
+     * param: board
+     * @return whether there are no red or black pieces on the board: game over!
+     */
+    public boolean gameOver(Board board) {
+        return (board.redPieces.isEmpty() || board.blackPieces.isEmpty() || trapped(board));
+    }
+
+    public boolean trapped(Board board) {
+        ArrayList<Piece> blacks = (ArrayList<Piece>) board.blackPieces;
+        ArrayList<Piece> reds = (ArrayList<Piece>) board.redPieces;
+
+        for(Piece piece : blacks){
+            // if you cannot move or capture left, right, the piece is blocked
+            if(!moveBlackLeft(piece) && !moveBlackRight(piece)
+                    && !blackCaptureLeft(piece) && !blackCaptureRight(piece)){
+                return true;
+            }
+        }
+        // same goes for red pieces
+        for(Piece piece : reds) {
+            if(!moveRedLeft(piece) && !moveRedRight(piece)
+                    && !redCaptureLeft(piece) && !redCaptureRight(piece)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public ArrayList<Board> possibleMoves() {
 
