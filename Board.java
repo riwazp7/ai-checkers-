@@ -30,6 +30,9 @@ public class Board {
 
     Board parent;
 
+    // can a piece be captured in this board?
+    private boolean canCapture = false;
+
     public Board(Board parent, ArrayList<BlackPiece> blackPieces, ArrayList<RedPiece> redPieces) {
         this.parent = parent;
         this.blackPieces = blackPieces;
@@ -41,12 +44,11 @@ public class Board {
         return this.parent;
     }
 
-    public void setBlackPieces(ArrayList<BlackPiece> pieces) {
-        for(BlackPiece p : pieces) { board[p.x][p.y] = "B"; }
+    public void setBlackPieces(ArrayList<BlackPiece> pieces) {for(BlackPiece p : pieces) { board[p.x][p.y] = "b"; }
     }
 
     public void setRedPieces(ArrayList<RedPiece> pieces) {
-        for(RedPiece p : pieces) { board[p.x][p.y] = "R"; }
+        for(RedPiece p : pieces) { board[p.x][p.y] = "r"; }
     }
 
     /**
@@ -68,41 +70,6 @@ public class Board {
 
     }
 
-    public boolean validRedMove(RedPiece p) {
-        // player can attempt to move left or right
-        // if no jump is available and the piece isn't a king, the piece can only move one square diagonally forward to
-        // an unoccupied space
-        /**
-        } else {
-            /**
-             * king can move any distance, forward or backward, along an unobstructed diagonal
-             * can jump any piece in the diagonal, if there is an open space after the jump
-             * When the King makes its first jump in a turn, it must land on a square that will allow it to make
-             * another jump, if another jump is possible. After landing, the King can turn and jump on a different
-             * diagonal, or it can jump on the same diagonal. The King must make its multiple jumps in a way that
-             * gives it the most jumps.
-        }
-        **/
-        return false;
-    }
-
-    public boolean validBlackMove(RedPiece p) {
-        // player can attempt to move left or right
-        // if no jump is available and the piece isn't a king, the piece can only move one square diagonally forward to
-        // an unoccupied space
-        /**
-         } else {
-         /**
-         * king can move any distance, forward or backward, along an unobstructed diagonal
-         * can jump any piece in the diagonal, if there is an open space after the jump
-         * When the King makes its first jump in a turn, it must land on a square that will allow it to make
-         * another jump, if another jump is possible. After landing, the King can turn and jump on a different
-         * diagonal, or it can jump on the same diagonal. The King must make its multiple jumps in a way that
-         * gives it the most jumps.
-         }
-         **/
-        return false;
-    }
 
     // don't want null strings on the board, will makes things harder in the long run
     public void noNull() {
@@ -117,13 +84,13 @@ public class Board {
      * @param p
      * @return true if a red piece can jump a black piece diagonally left
      */
-    public boolean redJumpLeft(RedPiece p) {
+    public boolean redCaptureLeft(RedPiece p) {
         // if it goes off the board at any point, return false
         if(p.y - 1 < 0 || p.y - 2 < 0 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
         // if the adjacent left piece is red, return false
-        if(board[p.x - 1][p.y - 1].equals("R")) { return false; }
+        if(board[p.x - 1][p.y - 1].toLowerCase().equals("r")) { return false; }
         // if the adjacent piece is black, but the square to jump in is blocked, return false
-        if( (board[p.x - 1][p.y - 1].equals("B"))
+        if( (board[p.x - 1][p.y - 1].toLowerCase().equals("b"))
                 && (!board[p.x - 2][p.y - 2].equals(empty)) ) {
                 return false;
         }
@@ -137,13 +104,13 @@ public class Board {
      * @param p
      * @return true if a red piece can jump a black piece diagonally right
      */
-    public boolean redJumpRight(RedPiece p) {
+    public boolean redCaptureRight(RedPiece p) {
         // if it goes off the board, return false
         if(p.y + 1 > 7 || p.y + 2 > 7 || p.x - 1 < 0 || p.x - 2 < 0) { return false; }
         // if adjacent piece is red, return false
-        if(board[p.x - 1][p.y + 1].equals("R")) { return false; }
+        if(board[p.x - 1][p.y + 1].toLowerCase().equals("r")) { return false; }
         // if the adjacent piece is black, but the square to jump in is blocked, return false
-        if( (board[p.x - 1][p.y + 1].equals("B"))
+        if( (board[p.x - 1][p.y + 1].toLowerCase().equals("b"))
                 && (!board[p.x - 2][p.y + 2].equals(empty)) ) {
                 return false;
         }
@@ -158,10 +125,10 @@ public class Board {
      * can jump a black piece
      * @return true if no red piece can jump
      */
-    public boolean redCannotJump() {
+    public boolean redCannotCapture() {
         for(RedPiece p : redPieces) {
-            if(redJumpLeft(p)){ return false; }
-            if(redJumpRight(p)){ return false; }
+            if(redCaptureLeft(p)){ return false; }
+            if(redCaptureRight(p)){ return false; }
         }
         return true;
     }
@@ -172,13 +139,13 @@ public class Board {
      * @return true if a black piece can jump a red piece diagonally left
      */
 
-    public boolean blackJumpLeft(BlackPiece p) {
+    public boolean blackCaptureLeft(BlackPiece p) {
         // if it goes off the board at any point, return false
         if(p.y - 1 < 0 || p.y - 2 < 0 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
         // if the adjacent left piece is black, return false
-        if(board[p.x + 1][p.y - 1].equals("B")) { return false; }
+        if(board[p.x + 1][p.y - 1].toLowerCase().equals("b")) { return false; }
         // if the adjacent piece is red, but the square to jump in is blocked, return false
-        if( (board[p.x + 1][p.y - 1].equals("R"))
+        if( (board[p.x + 1][p.y - 1].toLowerCase().equals("r"))
                 && (!board[p.x + 2][p.y - 2].equals(empty)) ) {
             return false;
         }
@@ -193,13 +160,13 @@ public class Board {
      * @param p
      * @return true if the black piece can jump a red piece diagonally right
      */
-    public boolean blackJumpRight(BlackPiece p) {
+    public boolean blackCaptureRight(BlackPiece p) {
         // if it goes off the board, return false
         if(p.y + 1 > 7 || p.y + 2 > 7 || p.x + 1 > 7 || p.x + 2 > 7) { return false; }
         // if adjacent piece is black, return false
-        if(board[p.x + 1][p.y + 1].equals("B")) { return false; }
+        if(board[p.x + 1][p.y + 1].toLowerCase().equals("b")) { return false; }
         // if the adjacent piece is red, but the square to jump in is blocked, return false
-        if( (board[p.x + 1][p.y + 1].equals("R"))
+        if( (board[p.x + 1][p.y + 1].toLowerCase().equals("r"))
                 && (!board[p.x + 2][p.y + 2].equals(empty)) ) {
             return false;
         }
@@ -214,12 +181,17 @@ public class Board {
      * must check whether any red pieces on the board can jump a black piece
      * @return true if no red piece can jump
      */
-    public boolean blackCannotJump() {
+    public boolean blackCannotCapture() {
         for(BlackPiece p : blackPieces) {
-            if(blackJumpLeft(p)){ return false; }
-            if(blackJumpRight(p)){ return false; }
+            if(blackCaptureLeft(p)){ return false; }
+            if(blackCaptureRight(p)){ return false; }
         }
         return true;
+    }
+
+    private void setCanCapture() {
+        if ( redsTurn ) { canCapture = !redCannotCapture(); }
+        else { canCapture = !blackCannotCapture(); }
     }
 
     // crowing a piece ends the turn, even if there are possible jumps
@@ -238,40 +210,65 @@ public class Board {
      * RED PIECES ARE MOVING UP THE BOARD!
      */
 
-    public void moveRedLeft(RedPiece p) {
-        // if redJumpLeft returns true, make the jump
+    public boolean moveRedLeft(RedPiece p) {
+        // if it goes off the board at any point, return false
+        if(p.y - 1 < 0 || p.x - 1 < 0) { return false; }
+
+        // if there is no adjacent piece return false
+        return (board[p.x - 1][p.y - 1].equals(empty));
     }
 
-    public void moveRedRight(RedPiece p) {
-        // if redJumpRight returns true, make the jump
+    public boolean moveRedRight(RedPiece p) {
+        if(p.y + 1 > 7 || p.x - 1 < 0){ return false; }
+        return(board[p.x - 1][p.y + 1].equals(empty));
     }
 
     /**
      * BLACK PIECES ARE MOVING DOWN THE BOARD!
      */
-    public void moveBlackLeft(BlackPiece p) {
+    public boolean moveBlackLeft(BlackPiece p) {
         // if blackJumpLeft returns true, make the jump
+        if(p.y - 1 < 0 || p.x + 1 > 7) { return false; }
+        return(board[p.x + 1][p.y - 1].equals(empty));
     }
 
-    public void moveBlackRight(BlackPiece p) {
+    public boolean moveBlackRight(BlackPiece p) {
         // if blackJumpRight returns true, make the jump
+        if(p.y + 1 > 7 || p.x + 1 > 7) { return false; }
+        return(board[p.x + 1][p.y + 1].equals(empty));
     }
 
 
-    public ArrayList<Board> possibleMoves(Board parent) {
+    public ArrayList<Board> possibleMoves() {
+
         ArrayList<Board> children = new ArrayList<Board>();
-        ArrayList<BlackPiece> blacks = (ArrayList<BlackPiece>) parent.blackPieces;
-        ArrayList<RedPiece> reds = (ArrayList<RedPiece>) parent.redPieces;
-        /**
-         * here we call find all the possible board states using other methods
-         */
+
+        // need ArrayLists for black and red pieces that will be used to create new boards
+
+        // red's turn
+        if(redsTurn) {
+            // if redCannotCapture, then just add all the board states with possible red moves
+            if (!canCapture) {
+                for (RedPiece piece : redPieces) {
+                    if (moveRedLeft(piece)) {
+                        //
+                    }
+                }
+                for (RedPiece piece : redPieces) {
+                    if (moveRedLeft(piece)) {
+
+                    }
+                }
+            }
+        }
         return children;
     }
 
 
 
-
-    
+        /**
+         * TESTING
+         */
 
     public void printBoard() {
         for(int i = 0; i < DEF_HEIGHT; i++) {
@@ -281,9 +278,6 @@ public class Board {
             System.out.println();
         }
     }
-
-
-
 
     public static void main(String[] args) {
         ArrayList<RedPiece> reds = new ArrayList<RedPiece>();
@@ -312,16 +306,12 @@ public class Board {
 
         a.setBlackPieces(blacks);
         a.setRedPieces(reds);
-        a.setInvalidSpaced();
+        a.setInvalidSpaces();
         a.noNull();
         a.printBoard();
 
-        System.out.println(a.redCannotJump());
-        System.out.println(a.blackCannotJump());
-
-        for(RedPiece p : reds){
-            System.out.println(a.validRedMove(p));
-        }
+        System.out.println(a.redCannotCapture());
+        System.out.println(a.blackCannotCapture());
 
     }
 
