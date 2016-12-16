@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +34,19 @@ public class Board {
 
     public Board(Board parent, String[][] board, ArrayList<BlackPiece> blackPieces, ArrayList<RedPiece> redPieces, boolean redsTurn) {
         this.parent = parent;
-	this.board = board;
+	    this.board = board;
         this.blackPieces = blackPieces;
         this.redPieces = redPieces;
-	this.redsTurn = redsTurn;
+	    this.redsTurn = redsTurn;
+    }
+
+    public Board(Board parent, ArrayList<BlackPiece> blackPieces, ArrayList<RedPiece> redPieces, boolean redsTurn) {
+        this.parent = parent;
+        this.blackPieces = blackPieces;
+        this.redPieces = redPieces;
+        this.redsTurn = redsTurn;
+        setBlackPieces(blackPieces);
+        setRedPieces(redPieces);
     }
 
     // in case we need to go back up in a tree
