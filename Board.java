@@ -39,8 +39,6 @@ public class Board implements Comparable<Board> {
         this.blackPieces = blackPieces;
         this.redPieces = redPieces;
 	    this.redsTurn = redsTurn;
-	    setInvalidSpaces();
-	    noNull();
     }
 
     public Board(Board parent, ArrayList<Piece> blackPieces, ArrayList<Piece> redPieces, boolean redsTurn) {
@@ -50,8 +48,6 @@ public class Board implements Comparable<Board> {
         this.redsTurn = redsTurn;
         setBlackPieces(blackPieces);
         setRedPieces(redPieces);
-        setInvalidSpaces();
-        noNull();
     }
 
     // in case we need to go back up in a tree
