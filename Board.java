@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by julianvera on 12/14/16.
+ * Board.java
  */
 public class Board implements Comparable<Board> {
 	// board size for most Checkers games
@@ -346,7 +346,7 @@ public class Board implements Comparable<Board> {
 		String[][] newBoard = copyBoard(cur);
 		int dir = (direction.equals("left") ? -1 : 1);
 		int color = (pieceColor.equals("red") ? -1 : 1);
-		newBoard[p.x + 1*color][p.y + 1 * dir] = cur[p.x][p.y];
+		newBoard[p.x + color][p.y + dir] = cur[p.x][p.y];
 		newBoard[p.x][p.y] = "#";
 		return newBoard;
 	}
@@ -359,7 +359,7 @@ public class Board implements Comparable<Board> {
 
 		newBoard[p.x + 2*color][p.y + 2*dir] = cur[p.x][p.y];
 		newBoard[p.x][p.y] = "#";
-		newBoard[p.x + 1*color][p.y + 1*dir] = "#";
+		newBoard[p.x + color][p.y + dir] = "#";
 		return newBoard;
 	}
 
@@ -621,7 +621,7 @@ public class Board implements Comparable<Board> {
 		 * TESTING
 		 */
 
-	public void printBoard() {
+	private void printBoard() {
 		for(int i = 0; i < DEF_HEIGHT; i++) {
 			for(int j = 0; j < DEF_WIDTH; j++) {
 				System.out.print(board[i][j] + "  ");
@@ -650,47 +650,10 @@ public class Board implements Comparable<Board> {
 	public static void main(String[] args) {
 
 	    
-		ArrayList<Piece> reds = new ArrayList<Piece>();
-		ArrayList<Piece> blacks = new ArrayList<Piece>();
-
-		/*Board a = new Board(null, new String[8][8], blacks,reds, true);
-		for(int i = 0; i < 3; i += 2){
-			for(int j = 1; j < a.board[0].length; j += 2 ) {
-				blacks.add(new Piece(i,j));
-			}
-		}
-
-		for(int i = 0; i < a.board[0].length; i += 2) {
-			blacks.add(new Piece(1,i));
-		}
-
-		for(int i = 5; i < 8; i += 2){
-			for(int j = 0; j < a.board[0].length; j += 2 ) {
-				reds.add(new Piece(i,j));
-			}
-		}
-
-		for(int i = 1; i < 8; i += 2) {
-			reds.add(new Piece(6,i));
-		}
-
-		a.setBlackPieces(blacks);
-		a.setRedPieces(reds);
-		a.setInvalidSpaces();
-		a.noNull();
-		a.printBoard();
-		ArrayList<Board> adjacent = a.possibleMoves();
-
-		for (Board b : adjacent) {
-			b.printBoard();
-		}  
-		System.out.println(a.redCannotCapture());
-		System.out.println(a.blackCannotCapture());
-        
+		ArrayList<Piece> reds = new ArrayList<>();
+		ArrayList<Piece> blacks = new ArrayList<>();
 
 
-		blacks = new ArrayList<Piece>();
-		reds = new ArrayList<Piece>();*/
 		Board b = new Board(null, new String[8][8], blacks, reds, true);
 
 	 	blacks.add (new Piece (6,1));
