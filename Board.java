@@ -26,22 +26,28 @@ public class Board {
     String[][] board = new String[DEF_HEIGHT][DEF_WIDTH];
 
     // true if it's red's true
-    private boolean redsTurn = false;
+    private boolean redsTurn;
 
     Board parent;
 
     // can a piece be captured in this board?
     private boolean canCapture = false;
 
-    public Board(Board parent, ArrayList<BlackPiece> blackPieces, ArrayList<RedPiece> redPieces) {
+    public Board(Board parent, String[][] board, ArrayList<BlackPiece> blackPieces, ArrayList<RedPiece> redPieces, boolean redsTurn) {
         this.parent = parent;
+	this.board = board;
         this.blackPieces = blackPieces;
         this.redPieces = redPieces;
+	this.redsTurn = redsTurn;
     }
 
     // in case we need to go back up in a tree
     public Board parent() {
         return this.parent;
+    }
+    
+    public String[][] board() {
+	return this.board;
     }
 
     public void setBlackPieces(ArrayList<BlackPiece> pieces) {for(BlackPiece p : pieces) { board[p.x][p.y] = "b"; }
@@ -242,29 +248,186 @@ public class Board {
     public ArrayList<Board> possibleMoves() {
 
         ArrayList<Board> children = new ArrayList<Board>();
-
+	String[][] newBoard;
         // need ArrayLists for black and red pieces that will be used to create new boards
 
         // red's turn
-        if(redsTurn) {
+        if (redsTurn) {
             // if redCannotCapture, then just add all the board states with possible red moves
             if (!canCapture) {
                 for (RedPiece piece : redPieces) {
                     if (moveRedLeft(piece)) {
-                        //
-                    }
+			newBoard = copyBoard(board);
+			newBoard[piece.x - 1][piece.y - 1] = board[piece.x][piece.y];
+			newBoard[piece.x][piece.y] = "#";
+			children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+                    } 
+		    if (moveRedRight(piece)) {
+			newBoard = copyBoard(board);
+			newBoard[piece.x - 1][piece.y + 1] = board[piece.x][piece.y];
+			newBoard[piece.x][piece.y] = "#";
+			children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+		    }
                 }
-                for (RedPiece piece : redPieces) {
-                    if (moveRedLeft(piece)) {
-
-                    }
-                }
-            }
-        }
+            } else {
+		// TODO: Needs to handle multijumps
+		for (RedPiece piece : redPieces) {
+		    if (redCaptureLeft(piece)) {
+			newBoard = copyBoard(board);
+			newBoard[piece.x - 2][piece.y - 2] = board[piece.x][piece.y];
+			newBoard[piece.x][piece.y] = "#";
+			newBoard[piece.x - 1][piece.y - 1] = "#";
+			Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+			while (!newState.redCannotCapture()) {
+			    piece = new RedPiece(piece.x - 2, piece.y - 2);
+			    if (newState.redCaptureLeft(piece)) {
+				newBoard = copyBoard(newState.board());
+				newBoard[piece.x - 2][piece.y - 2] = board[piece.x][piece.y];
+				newBoard[piece.x][piece.y] = "#";
+				newBoard[piece.x - 1][piece.y - 1] = "#";
+				newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+			    } else if (newState.redCaptureRight(piece)) {
+				newBoard = copyBoard(newState.board());
+                                newBoard[piece.x - 2][piece.y + 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x - 1][piece.y + 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+			    }
+			}
+			children.add(newState);
+		    } 
+		    if (redCaptureRight(piece)) {
+			newBoard = copyBoard(board);
+                        newBoard[piece.x - 2][piece.y + 2] = board[piece.x][piece.y];
+                        newBoard[piece.x][piece.y] = "#";
+                        newBoard[piece.x - 1][piece.y + 1] = "#";
+                        Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                        while (!newState.redCannotCapture()) {
+                            piece = new RedPiece(piece.x - 2, piece.y + 2);
+                            if (newState.redCaptureLeft(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x - 2][piece.y - 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x - 1][piece.y - 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                            } else if (newState.redCaptureRight(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x - 2][piece.y + 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x - 1][piece.y + 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+			    }
+			}
+			children.add(newState);
+		    }
+		}
+	    }
+        } else {
+	    if (!canCapture) {
+		for (BlackPiece piece : blackPieces) {
+		    if (moveBlackLeft(piece)) {
+			newBoard = copyBoard(board);
+			board[piece.x + 1][piece.y - 1] = board[piece.x][piece.y];
+			board[piece.x][piece.y] = "#";
+			children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+		    } 
+		    if (moveBlackRight(piece)) {
+			newBoard = copyBoard(board);
+			board[piece.x + 1][piece.y + 1] = board[piece.x][piece.y];
+			board[piece.x][piece.y] = "#";
+			children.add(new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn));
+		    }
+		}
+	    } else {
+		for (BlackPiece piece : blackPieces) {
+		    if (blackCaptureLeft(piece)) {
+			newBoard = copyBoard(board);
+                        newBoard[piece.x + 2][piece.y - 2] = board[piece.x][piece.y];
+                        newBoard[piece.x][piece.y] = "#";
+                        newBoard[piece.x + 1][piece.y - 1] = "#";
+                        Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                        while (!newState.blackCannotCapture()) {
+                            piece = new BlackPiece(piece.x + 2, piece.y - 2);
+                            if (newState.blackCaptureLeft(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x + 2][piece.y - 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x + 1][piece.y - 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                            } else if (newState.blackCaptureRight(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x + 2][piece.y + 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x + 1][piece.y + 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                            }
+                        }
+                        children.add(newState);
+		    }
+		    if (blackCaptureRight(piece)) {
+			newBoard = copyBoard(board);
+                        newBoard[piece.x + 2][piece.y + 2] = board[piece.x][piece.y];
+                        newBoard[piece.x][piece.y] = "#";
+                        newBoard[piece.x + 1][piece.y + 1] = "#";
+                        Board newState = new Board(this, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                        while (!newState.blackCannotCapture()) {
+                            piece = new BlackPiece(piece.x + 2, piece.y + 2);
+                            if (newState.blackCaptureLeft(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x + 2][piece.y - 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x + 1][piece.y - 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                            } else if (newState.blackCaptureRight(piece)) {
+                                newBoard = copyBoard(newState.board());
+                                newBoard[piece.x + 2][piece.y + 2] = board[piece.x][piece.y];
+                                newBoard[piece.x][piece.y] = "#";
+                                newBoard[piece.x + 1][piece.y + 1] = "#";
+                                newState = new Board(newState, newBoard, buildBlackList(newBoard), buildRedList(newBoard), !redsTurn);
+                            }
+                        }
+                        children.add(newState);
+		    }
+		}
+	    }
+	}
         return children;
     }
 
+    
+    private String[][] copyBoard(String[][] b) {
+	String [][] newBoard = new String[8][8];
+	for (int i = 0; i < 8; i++) {
+	    for (int j = 0; j < 8; j++) {
+		newBoard[i][j] = b[i][j];
+	    }
+	}
+	return newBoard;
+    }
 
+    private ArrayList<RedPiece> buildRedList (String[][] b) {
+	ArrayList<RedPiece> redList = new ArrayList<RedPiece>();
+	for (int i = 0; i < 8; i++) {
+	    for (int j = 0; j < 8; j++) {
+		if (b[i][j].toLowerCase().equals("r")) {
+		    redList.add(new RedPiece(i, j));
+		}
+	    }
+	}
+	return redList;
+    }
+
+    private ArrayList<BlackPiece> buildBlackList (String[][] b) {
+	ArrayList<BlackPiece> blackList = new ArrayList<BlackPiece>();
+	for (int i = 0; i < 8; i++) {
+	    for (int j = 0; j < 8; j++) {
+		if (b[i][j].toLowerCase().equals("b")) {
+		    blackList.add(new BlackPiece(i, j));
+		}
+	    }
+	}
+	return blackList;
+    }
 
         /**
          * TESTING
@@ -283,7 +446,7 @@ public class Board {
         ArrayList<RedPiece> reds = new ArrayList<RedPiece>();
         ArrayList<BlackPiece> blacks = new ArrayList<BlackPiece>();
 
-        Board a = new Board(null,blacks,reds);
+        Board a = new Board(null, new String[8][8], blacks,reds, true);
         for(int i = 0; i < 3; i += 2){
             for(int j = 0; j < a.board[0].length; j += 2 ) {
                 blacks.add(new BlackPiece(i,j));
@@ -309,7 +472,11 @@ public class Board {
         a.setInvalidSpaces();
         a.noNull();
         a.printBoard();
-
+	ArrayList<Board> adjacent = a.possibleMoves();
+	for (Board b : adjacent) {
+	    b.printBoard();
+	}
+	
         System.out.println(a.redCannotCapture());
         System.out.println(a.blackCannotCapture());
 
