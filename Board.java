@@ -609,6 +609,19 @@ public class Board implements Comparable<Board> {
 		}
 	}
 
+	@Override
+	public String toString() {
+		String str = "";
+		for(int i = 0; i < DEF_HEIGHT; i++) {
+			for(int j = 0; j < DEF_WIDTH; j++) {
+				if (board[i][j] == null) str += "X ";
+				else str += (board[i][j] + " ");
+			}
+			str += "\n";
+		}
+		return str;
+	}
+
 	public int compareTo(Board board) {
 		return Evaluator.evaluate(board).compareTo(Evaluator.evaluate(this));
 	}
