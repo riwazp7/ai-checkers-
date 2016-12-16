@@ -414,27 +414,27 @@ public class Board {
     }
 
     private ArrayList<RedPiece> buildRedList (String[][] b) {
-	ArrayList<RedPiece> redList = new ArrayList<RedPiece>();
-	for (int i = 0; i < 8; i++) {
-	    for (int j = 0; j < 8; j++) {
-		if (b[i][j].toLowerCase().equals("r")) {
-		    redList.add(new RedPiece(i, j));
-		}
+	    ArrayList<RedPiece> redList = new ArrayList<RedPiece>();
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            if (b[i][j].toLowerCase().equals("r")) {
+		            redList.add(new RedPiece(i, j));
+		        }
+	        }
 	    }
-	}
-	return redList;
+	    return redList;
     }
 
     private ArrayList<BlackPiece> buildBlackList (String[][] b) {
-	ArrayList<BlackPiece> blackList = new ArrayList<BlackPiece>();
-	for (int i = 0; i < 8; i++) {
-	    for (int j = 0; j < 8; j++) {
-		if (b[i][j].toLowerCase().equals("b")) {
-		    blackList.add(new BlackPiece(i, j));
-		}
+	    ArrayList<BlackPiece> blackList = new ArrayList<BlackPiece>();
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+		        if (b[i][j].toLowerCase().equals("b")) {
+		            blackList.add(new BlackPiece(i, j));
+		        }
+	        }
 	    }
-	}
-	return blackList;
+	    return blackList;
     }
 
         /**
