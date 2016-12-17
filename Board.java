@@ -372,29 +372,9 @@ public class Board implements Comparable<Board> {
      * @return whether there are no red or black pieces on the board: game over!
      */
     public boolean gameOver() {
-        return (redPieces.isEmpty() || blackPieces.isEmpty());// || trapped(this));
+        return (redPieces.isEmpty() || blackPieces.isEmpty());
     }
 
-    public boolean trapped(Board board) {
-        ArrayList<Piece> blacks = (ArrayList<Piece>) board.blackPieces;
-        ArrayList<Piece> reds = (ArrayList<Piece>) board.redPieces;
-
-        for(Piece piece : blacks){
-            // if you cannot move or capture left, right, the piece is blocked
-            if(!moveBlackLeft(piece) && !moveBlackRight(piece)
-                    && !blackCaptureLeft(piece) && !blackCaptureRight(piece)){
-                return true;
-            }
-        }
-        // same goes for red pieces
-        for(Piece piece : reds) {
-            if(!moveRedLeft(piece) && !moveRedRight(piece)
-                    && !redCaptureLeft(piece) && !redCaptureRight(piece)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 	public ArrayList<Board> possibleMoves() {
 
@@ -430,7 +410,6 @@ public class Board implements Comparable<Board> {
 				
 
 			} else {
-				// TODO: Needs to handle multijumps
 				for (Piece piece : redPieces) {
 					if (redCaptureLeft(piece)) {
 						newBoard = makeCapture(piece, board, "left", "red");
@@ -606,54 +585,6 @@ public class Board implements Comparable<Board> {
 	public static void main(String[] args) {
 
 	    
-		/*ArrayList<Piece> reds = new ArrayList<>();
-		ArrayList<Piece> blacks = new ArrayList<>();
 
-
-		Board b = new Board(null, new String[8][8], blacks, reds, true);
-
-
-		
-	 	blacks.add (new Piece (6,1));
-		blacks.add (new Piece (4, 1));
-		blacks.add (new Piece (4, 3));
-		blacks.add (new Piece (2, 5));
-
-
-
-		reds.add (new Piece (7,0));
-		reds.add (new Piece (0, 3));
-		reds.add (new Piece (1, 6));
-		reds.add (new Piece (2, 5));
-		reds.add (new Piece (7, 0));
-		reds.add (new Piece (7, 4));
-		reds.add (new Piece (4, 7));
-
-
-		b.setBlackPieces(blacks);
-		b.setRedPieces(reds);
-		b.setInvalidSpaces();
-		b.noNull();
-		b.setRedKing(reds.get(1));
-		b.setRedKing(reds.get(2));
-
-		b.setBlackKing(blacks.get(2));
-		b.printBoard();
-		b.setBlackKing(blacks.get(2));
-		System.out.println(b);
-
-
-		ArrayList<Board> adjacent = b.possibleMoves();
-		for (Board c : adjacent) {
-			System.out.println("----------------------");
-			System.out.println(c);
-		}
-
-		
-		// only add red pieces : test edge cases
-		reds.add(new Piece(7,9));
-
-		System.out.println(b.redCaptureLeft(reds.get(0)));
-*/
 	}
 }

@@ -6,7 +6,6 @@ public class Checkers {
     static ArrayList<Piece> redPieces;
     static ArrayList<Piece> blackPieces;
     public boolean reset;
-  //  static Minimax minimax;
 
     public Checkers() {
         redPieces = getRedPositions();
@@ -16,10 +15,6 @@ public class Checkers {
         board.setRedPieces(redPieces);
         board.setInvalidSpaces();
         board.noNull();
-
-       // minimax = new MiniMax(board);
-        //ystem.out.println(miniMax.getBestMove());
-
     }
 
     private static ArrayList<Piece> getRedPositions() {
