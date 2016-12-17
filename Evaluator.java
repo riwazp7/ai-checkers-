@@ -1,4 +1,3 @@
-import java.util.HashMap;
 
 /**
  * Evaluator.java
@@ -30,14 +29,11 @@ public class Evaluator {
             { 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    private HashMap<String, Integer> cache = new HashMap<>();
-
-
     /* This is a pretty basic evaluation function.
      * It gives a base value PIECE_VALUE to each remaining
      */
     public static Integer evaluate(Board board) {
-
+        return function1(board);
     }
 
     public static Integer function1(Board board) {
