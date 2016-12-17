@@ -24,7 +24,7 @@ public class Board implements Comparable<Board> {
 	String[][] board = new String[DEF_HEIGHT][DEF_WIDTH];
 
 	// true if it's red's true
-	private boolean redsTurn;
+	public boolean redsTurn;
 
 	Board parent;
 

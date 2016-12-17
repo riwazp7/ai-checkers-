@@ -8,7 +8,7 @@ public class Node {
     Board board;
     ArrayList<Node> children = new ArrayList<>();
     int depth;
-    int value = -1;
+    int value = Integer.MAX_VALUE;
 
     // True if this is a max node.
     boolean max;
@@ -18,9 +18,14 @@ public class Node {
         this.board = board;
         this.depth = depth;
         this.max = max;
-
-        if (depth == MiniMax.MAX_TREE_DEPTH) value = Evaluator.evaluate(board);
     }
+
+    public int getValue() {
+        if (value == Integer.MAX_VALUE) value = Evaluator.evaluate(board);
+        return value;
+    }
+
+
 
     public void generateChildren() {
         if (depth >= MiniMax.MAX_TREE_DEPTH) return;
@@ -53,7 +58,7 @@ public class Node {
                 return minVal;
             }
         } else {
-            return value;
+            return getValue();
         }
     }
 

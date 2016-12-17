@@ -1,5 +1,6 @@
 /**
- * Created by Riwaz on 12/16/16.
+ * MiniMax.java
+ * Riwaz Poudyal, Julian Vera, Mark Talbot
  */
 public class MiniMax {
 
