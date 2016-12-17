@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Checkers.java
+ * Contains code for the Checkers game
+ */
+
 public class Checkers {
     static Board board;
     static ArrayList<Piece> redPieces;

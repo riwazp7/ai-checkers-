@@ -1,5 +1,6 @@
 /**
  * MiniMax.java
+ * Creates a MiniMax tree for the given board state.
  * Riwaz Poudyal, Julian Vera, Mark Talbot
  */
 public class MiniMax {

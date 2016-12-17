@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * Created by Riwaz on 12/16/16.
+ * Node.java
+ * A Node of the minimax tree
  */
 public class Node {
 

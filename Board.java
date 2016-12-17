@@ -3,6 +3,7 @@ import java.util.List;
 
 /**
  * Board.java
+ * Represents the Checkers board
  */
 public class Board implements Comparable<Board> {
 	// board size for most Checkers games
