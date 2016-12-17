@@ -33,7 +33,7 @@ public class Evaluator {
      * It gives a base value PIECE_VALUE to each remaining
      */
     public static Integer evaluate(Board board) {
-        return function1(board);
+        return function4(board);
     }
 
     public static Integer function1(Board board) {
@@ -108,15 +108,15 @@ public class Evaluator {
 
         String[][] boardArr = board.board();
         for (Piece piece : board.redPieces) {
-            if (boardArr[piece.x -1][piece.y - 1].equals("b") || boardArr[piece.x -1][piece.y - 1].equals("B")) {
+            if (isInsideBoard(piece.x - 1, piece.y - 1) && (boardArr[piece.x - 1][piece.y - 1].equals("b") || boardArr[piece.x -1][piece.y - 1].equals("B"))) {
                 if (isInsideBoard(piece.x + 1, piece.y + 1)) {
                     if (boardArr[piece.x + 1][piece.y + 1].equals("#")) {
-                        redScore -= 3;
+                        redScore -= 4;
                     } else if (boardArr[piece.x + 1][piece.y + 1].equals("B") || boardArr[piece.x + 1][piece.y + 1].equals("b")) {
-                        redScore -= 2;
+                        redScore -= 3;
                     } else redScore -=1;
                 }
-            } else if (boardArr[piece.x - 1][piece.y + 1].equals("b") || boardArr[piece.x - 1][piece.y + 1].equals("B")) {
+            } else if (isInsideBoard(piece.x - 1, piece.y + 1) && ((boardArr[piece.x - 1][piece.y + 1].equals("b") || boardArr[piece.x - 1][piece.y + 1].equals("B")))) {
                 if (isInsideBoard(piece.x + 1, piece.y - 1)) {
                     if (boardArr[piece.x + 1][piece.y - 1].equals("#")) {
                         redScore -= 3;
@@ -124,56 +124,56 @@ public class Evaluator {
                         redScore -= 2;
                     } else redScore -=1;
                 }
-            } else if (boardArr[piece.x + 1][piece.y - 1].equals("B")) {
+            } else if (isInsideBoard(piece.x + 1, piece.y - 1) && boardArr[piece.x + 1][piece.y - 1].equals("B")) {
                 if (isInsideBoard(piece.x - 1, piece.y + 1)) {
                     if (boardArr[piece.x - 1][piece.y + 1].equals("#")) {
-                        redScore -= 3;
+                        redScore -= 4;
                     } else if (boardArr[piece.x - 1][piece.y + 1].equals("B") || boardArr[piece.x - 1][piece.y + 1].equals("b")) {
-                        redScore -= 2;
+                        redScore -= 3;
                     } else redScore -=1;
                 }
-            } else if (boardArr[piece.x + 1][piece.y + 1].equals("B")) {
+            } else if (isInsideBoard(piece.x + 1, piece.y + 1) && boardArr[piece.x + 1][piece.y + 1].equals("B")) {
                 if (isInsideBoard(piece.x - 1, piece.y - 1)) {
                     if (boardArr[piece.x - 1][piece.y - 1].equals("#")) {
-                        redScore -= 3;
+                        redScore -= 4;
                     } else if (boardArr[piece.x - 1][piece.y - 1].equals("B") || boardArr[piece.x - 1][piece.y - 1].equals("b")) {
-                        redScore -= 2;
-                    } else redScore -=1;
+                        redScore -= 3;
+                    } else redScore -= 1;
                 }
             }
         }
 
         for (Piece piece : board.blackPieces) {
-            if (boardArr[piece.x + 1][piece.y + 1].equals("r") || boardArr[piece.x + 1][piece.y + 1].equals("R")) {
+            if (isInsideBoard(piece.x + 1, piece.y + 1) && (boardArr[piece.x + 1][piece.y + 1].equals("r") || boardArr[piece.x + 1][piece.y + 1].equals("R"))) {
                 if (isInsideBoard(piece.x - 1, piece.y - 1)) {
                     if (boardArr[piece.x - 1][piece.y - 1].equals("#")) {
-                        blackScore -= 3;
+                        blackScore -= 4;
                     } else if (boardArr[piece.x - 1][piece.y - 1].equals("R") || boardArr[piece.x - 1][piece.y - 1].equals("r")) {
-                        blackScore -= 2;
+                        blackScore -= 3;
                     } else blackScore -= 1;
                 }
-            } else if (boardArr[piece.x + 1][piece.y - 1].equals("r") || boardArr[piece.x - 1][piece.y + 1].equals("R")) {
+            } else if (isInsideBoard(piece.x + 1, piece.y -1) && (boardArr[piece.x + 1][piece.y - 1].equals("r") || boardArr[piece.x + 1][piece.y - 1].equals("R"))) {
                 if (isInsideBoard(piece.x - 1, piece.y + 1)) {
                     if (boardArr[piece.x + 1][piece.y - 1].equals("#")) {
-                        blackScore -= 3;
+                        blackScore -= 4;
                     } else if (boardArr[piece.x - 1][piece.y + 1].equals("R") || boardArr[piece.x - 1][piece.y + 1].equals("r")) {
-                        blackScore -= 2;
+                        blackScore -= 3;
                     } else blackScore -=1;
                 }
-            } else if (boardArr[piece.x - 1][piece.y + 1].equals("R")) {
+            } else if (isInsideBoard(piece.x - 1, piece.y + 1) && boardArr[piece.x - 1][piece.y + 1].equals("R")) {
                 if (isInsideBoard(piece.x + 1, piece.y - 1)) {
                     if (boardArr[piece.x + 1][piece.y - 1].equals("#")) {
-                        blackScore -= 3;
+                        blackScore -= 4;
                     } else if (boardArr[piece.x + 1][piece.y - 1].equals("R") || boardArr[piece.x + 1][piece.y - 1].equals("r")) {
-                        blackScore -= 2;
+                        blackScore -= 3;
                     } else blackScore -=1;
                 }
-            } else if (boardArr[piece.x - 1][piece.y - 1].equals("R")) {
+            } else if (isInsideBoard(piece.x - 1, piece.y - 1) && boardArr[piece.x - 1][piece.y - 1].equals("R")) {
                 if (isInsideBoard(piece.x + 1, piece.y + 1)) {
                     if (boardArr[piece.x + 1][piece.y + 1].equals("#")) {
-                        blackScore -= 3;
+                        blackScore -= 4;
                     } else if (boardArr[piece.x + 1][piece.y + 1].equals("R") || boardArr[piece.x + 1][piece.y + 1].equals("r")) {
-                        blackScore -= 2;
+                        blackScore -= 3;
                     } else blackScore -=1;
                 }
             }

@@ -114,7 +114,7 @@ public class Checkers {
                 board = new Board(board, nextBoard, Board.buildBlackList(nextBoard), Board.buildRedList(nextBoard), !redTurn);
             } else {
                 minimax = new MiniMax(board);
-                board = minimax.getBestMove();
+                board = minimax.getBestMoveByPruning();
             }
             redTurn = !redTurn;
             gameOver = board.gameOver();

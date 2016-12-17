@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Node {
 
     Board board;
-    ArrayList<Node> children = new ArrayList<>();
+    ArrayList<Node> children = null;
     int depth;
     int value = Integer.MAX_VALUE;
 
@@ -25,14 +25,21 @@ public class Node {
         return value;
     }
 
+    public ArrayList<Node> getChildren() {
+        if (depth >= MiniMax.MAX_TREE_DEPTH) return null;
+        if (children == null) {
+            generateChildren();
+        }
+        return children;
+    }
+
 
 
     public void generateChildren() {
-        if (depth >= MiniMax.MAX_TREE_DEPTH) return;
+        children = new ArrayList<>();
         for (Board b : board.possibleMoves()) {
             Node n = new Node(b, depth + 1, !max);
             children.add(n);
-            n.generateChildren();
         }
     }
 
@@ -40,7 +47,7 @@ public class Node {
         if (depth < MiniMax.MAX_TREE_DEPTH) {
             if (max) {
                 int maxVal = Integer.MIN_VALUE;
-                for (Node n : children) {
+                for (Node n : getChildren()) {
                     int childValue = n.getTreeValue();
                     if (childValue > maxVal) {
                         maxVal = childValue;
@@ -49,7 +56,7 @@ public class Node {
                 return maxVal;
             } else {
                 int minVal = Integer.MAX_VALUE;
-                for (Node n : children) {
+                for (Node n : getChildren()) {
                     int childValue = n.getTreeValue();
                     if (childValue > minVal) {
                         minVal = childValue;
@@ -66,14 +73,14 @@ public class Node {
         if (depth >= MiniMax.MAX_TREE_DEPTH) {
             return Evaluator.evaluate(node.board);
         } else if (node.max) {
-            for (Node n : node.children) {
+            for (Node n : node.getChildren()) {
                 alpha = java.lang.Math.max(alpha, getValueByPruning(n, depth + 1, alpha, beta));
                 if (beta <= alpha) break;
             }
             return alpha;
         } else {
             // Node is a min node
-            for (Node n : node.children) {
+            for (Node n : node.getChildren()) {
                 beta = java.lang.Math.min(beta, getValueByPruning(n, depth + 1, alpha, beta));
                 if (beta <= alpha) break;
             }

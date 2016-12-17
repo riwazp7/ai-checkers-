@@ -4,7 +4,8 @@
  */
 public class MiniMax {
 
-    public static final int MAX_TREE_DEPTH = 4;
+    // Max depth of the tree we need to search to.
+    public static final int MAX_TREE_DEPTH = 8;
 
     Node root;
 
@@ -13,10 +14,11 @@ public class MiniMax {
         root.generateChildren();
     }
 
+    // Minimax only
     public Board getBestMove() {
         Board best = null;
         int maxVal = Integer.MIN_VALUE;
-        for (Node n : root.children) {
+        for (Node n : root.getChildren()) {
             int val = n.getTreeValue();
             if (val > maxVal) {
                 maxVal = val;
@@ -26,10 +28,11 @@ public class MiniMax {
         return best;
     }
 
+    //Minimax with pruning
     public Board getBestMoveByPruning() {
         Board best = null;
         int maxVal = Integer.MIN_VALUE;
-        for (Node n : root.children) {
+        for (Node n : root.getChildren()) {
             int val = n.getValueByPruning(n, 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
             if (val > maxVal) {
                 maxVal = val;
