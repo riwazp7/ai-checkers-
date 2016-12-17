@@ -56,4 +56,23 @@ public class Node {
             return value;
         }
     }
+
+    public int getValueByPruning (Node node, int depth, int alpha, int beta) {
+        if (depth >= MiniMax.MAX_TREE_DEPTH) {
+            return Evaluator.evaluate(node.board);
+        } else if (node.max) {
+            for (Node n : node.children) {
+                alpha = java.lang.Math.max(alpha, getValueByPruning(n, depth + 1, alpha, beta));
+                if (beta <= alpha) break;
+            }
+            return alpha;
+        } else {
+            // Node is a min node
+            for (Node n : node.children) {
+                beta = java.lang.Math.min(beta, getValueByPruning(n, depth + 1, alpha, beta));
+                if (beta <= alpha) break;
+            }
+            return beta;
+        }
+    }
 }

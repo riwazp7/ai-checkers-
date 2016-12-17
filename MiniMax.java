@@ -25,4 +25,18 @@ public class MiniMax {
         return best;
     }
 
+    public Board getBestMoveByPruning() {
+        Board best = null;
+        int maxVal = Integer.MIN_VALUE;
+        for (Node n : root.children) {
+            int val = n.getValueByPruning(n, 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            if (val > maxVal) {
+                maxVal = val;
+                best = n.board;
+            }
+        }
+        return best;
+    }
+
+
 }
